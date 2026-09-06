@@ -2,7 +2,8 @@
 // Supports Ollama, LM Studio, and any OpenAI-compatible endpoint
 
 import OpenAI from 'openai';
-import type { ChatCompletion, ChatCompletionChunk, ChatCompletionMessageParam, ChatCompletionMessageToolCall, ChatCompletionTool, CompletionUsage, Model as OpenAIModel } from 'openai';
+import type { ChatCompletion, ChatCompletionChunk, ChatCompletionMessageToolCall, ChatCompletionTool, CompletionUsage, Model as OpenAIModel } from 'openai';
+import type { ChatCompletionMessageParam } from 'openai/resources/chat/completions';
 import type {
   Message,
   StreamChunk,

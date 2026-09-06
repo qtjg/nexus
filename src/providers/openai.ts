@@ -2,7 +2,8 @@
 // Direct integration with OpenAI API
 
 import OpenAI from 'openai';
-import type { ChatCompletion, ChatCompletionChunk, ChatCompletionMessageParam, ChatCompletionMessageToolCall, ChatCompletionTool, CompletionUsage } from 'openai';
+import type { ChatCompletion, ChatCompletionChunk, ChatCompletionMessageToolCall, ChatCompletionTool, CompletionUsage } from 'openai';
+import type { ChatCompletionMessageParam } from 'openai/resources/chat/completions';
 import type {
   Message,
   StreamChunk,

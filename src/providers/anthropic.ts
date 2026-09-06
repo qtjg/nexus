@@ -2,7 +2,11 @@
 // Direct integration with Anthropic Claude API
 
 import Anthropic from '@anthropic-ai/sdk';
-import type { MessageParam as AnthropicMessageParam, ContentBlock, Tool as AnthropicTool } from '@anthropic-ai/sdk';
+import type {
+  MessageParam as AnthropicMessageParam,
+  ContentBlock,
+  Tool as AnthropicTool,
+} from '@anthropic-ai/sdk';
 import type {
   Message,
   StreamChunk,
@@ -12,6 +16,9 @@ import type {
 } from '../types/index.js';
 import type { ChatResponse, ChatOptions } from './base.js';
 import { BaseProvider } from './base.js';
+
+// Type-safe input schema that satisfies the SDK's strict ToolParam requirements
+type SafeToolParam = { type: string } & Record<string, unknown>;
 
 export class AnthropicProvider extends BaseProvider {
   private client: Anthropic;
@@ -34,7 +41,7 @@ export class AnthropicProvider extends BaseProvider {
       system: systemMessage?.content,
       max_tokens: options.maxTokens || 4096,
       temperature: options.temperature,
-      tools,
+      tools: tools as AnthropicTool[],
       tool_choice: options.toolChoice as any,
     });
 
@@ -77,7 +84,7 @@ export class AnthropicProvider extends BaseProvider {
       system: systemMessage?.content,
       max_tokens: options.maxTokens || 4096,
       temperature: options.temperature,
-      tools,
+      tools: tools as AnthropicTool[],
     });
 
     for await (const chunk of stream) {
@@ -123,7 +130,13 @@ export class AnthropicProvider extends BaseProvider {
 
   async healthCheck(): Promise<boolean> {
     try {
-      await this.client.models.list({ limit: 1 });
+      // Anthropic SDK v0.32+ removed the models.list() endpoint;
+      // verify health via a minimal messages call instead.
+      await this.client.messages.create({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 1,
+        messages: [{ role: 'user', content: 'hi' }],
+      });
       return true;
     } catch {
       return false;
@@ -131,24 +144,41 @@ export class AnthropicProvider extends BaseProvider {
   }
 
   async listModels(): Promise<Model[]> {
-    const res = await this.client.models.list();
-    return res.data.map((m) => ({
-      id: m.id,
-      name: m.display_name || m.id,
-      provider: this.config.id,
-      source: 'cloud',
-      contextWindow: 200000,
-      capabilities: {
-        chat: true,
-        streaming: true,
-        toolCalling: true,
-        structuredOutput: true,
-        vision: true,
-        reasoning: false,
+    // Anthropic SDK v0.32+ removed the models.list() endpoint.
+    // Return the known Claude model lineup statically.
+    const knownModels: Model[] = [
+      {
+        id: 'claude-sonnet-4-5-20250823',
+        name: 'Claude Sonnet 4.5',
+        provider: this.config.id,
+        source: 'cloud',
+        contextWindow: 200000,
+        capabilities: { chat: true, streaming: true, toolCalling: true, structuredOutput: true, vision: true, reasoning: false },
+        aliases: [],
+        createdAt: new Date().toISOString(),
       },
-      aliases: [],
-      createdAt: new Date().toISOString(),
-    }));
+      {
+        id: 'claude-haiku-4-5-20251001',
+        name: 'Claude Haiku 4.5',
+        provider: this.config.id,
+        source: 'cloud',
+        contextWindow: 200000,
+        capabilities: { chat: true, streaming: true, toolCalling: true, structuredOutput: true, vision: true, reasoning: false },
+        aliases: [],
+        createdAt: new Date().toISOString(),
+      },
+      {
+        id: 'claude-opus-4-5-20251001',
+        name: 'Claude Opus 4.5',
+        provider: this.config.id,
+        source: 'cloud',
+        contextWindow: 200000,
+        capabilities: { chat: true, streaming: true, toolCalling: true, structuredOutput: true, vision: true, reasoning: false },
+        aliases: [],
+        createdAt: new Date().toISOString(),
+      },
+    ];
+    return knownModels;
   }
 
   private convertMessage(msg: Message): AnthropicMessageParam {
@@ -171,18 +201,20 @@ export class AnthropicProvider extends BaseProvider {
   }
 
   private convertTool(tool: import('../types/index.js').ToolDefinition): AnthropicTool {
+    const schema = tool.schema || {
+      type: 'object' as const,
+      properties: Object.fromEntries(
+        (tool.parameters || []).map((p) => [
+          p.name,
+          { type: p.type === 'number' ? 'number' : 'string', description: p.description },
+        ])
+      ),
+    };
+    // Ensure input_schema satisfies the strict ToolParam type (must have `type`)
     return {
       name: tool.name,
       description: tool.description,
-      input_schema: tool.schema || {
-        type: 'object',
-        properties: Object.fromEntries(
-          (tool.parameters || []).map((p) => [
-            p.name,
-            { type: p.type === 'number' ? 'number' : 'string', description: p.description },
-          ])
-        ),
-      },
+      input_schema: (schema as SafeToolParam) as AnthropicTool['input_schema'],
     };
   }
 
