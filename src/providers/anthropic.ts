@@ -41,11 +41,11 @@ export class AnthropicProvider extends BaseProvider {
       system: systemMessage?.content,
       max_tokens: options.maxTokens || 4096,
       temperature: options.temperature,
-      tools: tools as AnthropicTool[],
+      tools: tools as any,
       tool_choice: options.toolChoice as any,
     });
 
-    const content = this.extractText(response.content);
+    const content = this.extractText(response.content as any);
     const usage = {
       input: response.usage.input_tokens,
       output: response.usage.output_tokens,
@@ -84,7 +84,7 @@ export class AnthropicProvider extends BaseProvider {
       system: systemMessage?.content,
       max_tokens: options.maxTokens || 4096,
       temperature: options.temperature,
-      tools: tools as AnthropicTool[],
+      tools: tools as any,
     });
 
     for await (const chunk of stream) {
