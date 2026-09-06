@@ -3,18 +3,12 @@
 <div align="center">
 
 ```
-        ▄▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▄
-       █                               █
-       █   ▄▄▄  ▄▀▀▄  █▀▀  ▄▄▄  ▄▀▀▀█  █
-       █  █   █ █▀▀█  █▀▀  █   █ █▀▀▀  █
-       █  █▄▄▄▀ █▀▀▀  █    █▄▄▄█ █     █
-       █        ▄▀  ▀▄                              ╔════╗
-       █   ▄▀▀▀▀▀▀▀▀▀▀▀▄  ╔══════════════════════╗  ║ 3D ║
-       █  ▄▀    N  E  X  ▀▄ ║  The Universal AI  ║  ║DEV ║
-       █  █    U  S       █  ║  Development Layer ║  ╚════╝
-       █   ▀▄____________▄▀  ║  v0.1.0 — Alpha   ║
-       █        ▀▄▄▄▄▄▄▄▄▀       ╚══════════════════════╝
-        ▀                  ▀
+        ███████╗███████╗██████╗ ███╗   ███╗███████╗███████╗
+        ██╔════╝██╔════╝██╔══██╗████╗ ████║██╔════╝██╔════╝
+        ███████╗█████╗  ██████╔╝██╔████╔██║█████╗  ███████╗
+        ╚════██║██╔══╝  ██╔══██╗██║╚██╔╝██║██╔══╝  ╚════██║
+        ███████║███████╗██║  ██║██║ ╚═╝ ██║███████╗███████║
+        ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝╚══════╝
 ```
 
 `git clone https://github.com/qtjg/nexus.git && cd nexus && npm install && npm run build && npm link`
@@ -41,31 +35,30 @@
 <div align="center">
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                                                                             │
-│   Current state:                                                          │
-│   ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
-│   │Provider  │ │ Agent    │ │  Tool    │ │ Permis-  │ │ Session  │       │
-│   │  SDK     │ │   Loop   │ │ Executor │ │   sions  │ │   Store  │       │
-│   └────┬─────┘ └────┬─────┘ └────┬─────┘ └────┬─────┘ └────┬─────┘       │
-│        │            │            │            │            │              │
-│        └────────────┴────────────┴────────────┴────────────┘              │
-│                            │                                              │
-│                            ▼                                              │
-│              ╔═══════════════════════════════════╗                        │
-│              ║       ✦  NEXUS  ✦                ║                        │
-│              ║    Unified AI Runtime            ║                        │
-│              ╚═══════════════════════════════════╝                        │
-│                            │                                              │
-│        ┌───────────────────┼───────────────────┐                          │
-│        │                   │                   │                          │
-│        ▼                   ▼                   ▼                          │
-│   ┌──────────┐      ┌──────────┐      ┌──────────┐                       │
-│   │  CLI     │      │ Playground│      │  Scripts  │                       │
-│   │ Interface │      │  (TUI)   │      │  (headless)│                      │
-│   └──────────┘      └──────────┘      └──────────┘                       │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
+╔══════════════════════════════════════════════════════════════════════════════════╗
+║                                                                                  ║
+║   CURRENT STATE                                                                  ║
+║   ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────┐  ║
+║   │  Provider   │ │   Agent     │ │    Tool     │ │  Permission │ │ Session │  ║
+║   │    SDK      │ │    Loop     │ │  Executor   │ │   Engine    │ │  Store  │  ║
+║   └──────┬──────┘ └──────┬──────┘ └──────┬──────┘ └──────┬──────┘ └────┬────┘  ║
+║          └───────────────┴───────────────┴───────────────┴────────────┘        ║
+║                                │                                                ║
+║                                ▼                                                ║
+║                   ╔═══════════════════════════════════╗                        ║
+║                   ║       ✦  NEXUS  ✦                ║                        ║
+║                   ║     UNIFIED AI RUNTIME           ║                        ║
+║                   ╚═══════════════════════════════════╝                        ║
+║                                │                                                ║
+║         ┌──────────────────────┼──────────────────────┐                        ║
+║         │                      │                      │                        ║
+║         ▼                      ▼                      ▼                        ║
+║   ┌───────────┐        ┌────────────┐        ┌────────────┐                   ║
+║   │   CLI     │        │  Playground│        │   Scripts  │                   ║
+║   │ Interface │        │   (TUI)    │        │ (headless) │                   ║
+║   └───────────┘        └────────────┘        └────────────┘                   ║
+║                                                                                  ║
+╚══════════════════════════════════════════════════════════════════════════════════╝
 ```
 
 </div>
@@ -90,44 +83,44 @@ The model is replaceable. The environment, harness, tools, permissions, and deve
 <div align="center">
 
 ```
-      ┌─────────────────────────────────────────────────────────────────┐
-      │                          NEXUS CLI                               │
-      │                    (commander · TUI · streaming)                 │
-      └────────────────────────┬────────────────────────────────────────┘
-                               │
-      ┌────────────────────────┼────────────────────────────────────────┐
-      │                   ┌────┴────┐                                  │
-      │                   │ Play-   │                                 │
-      │                   │ ground  │                                 │
-      │                   └────┬────┘                                 │
-      │                        │                                      │
-      │    ┌───────────────────┼───────────────────┐                  │
-      │    │                   │                   │                  │
-      │    ▼                   ▼                   ▼                  │
-      │ ┌────────┐      ┌──────────┐      ┌──────────┐               │
-      │ │  TOOLS │◄─────┤  HARNESS │─────▶│ PROVIDER │               │
-      │ │ Engine │      │   Engine │      │  Abstr.  │               │
-      │ └───┬────┘      └────┬─────┘      └──────────┘               │
-      │     │               │                                       │
-      │     │    ┌──────────┴──────────┐                           │
-      │     │    │                     │                           │
-      │     ▼    ▼                     ▼                           │
-      │ ┌──────────┐      ┌──────────┐      ┌──────────┐           │
-      │ │ PERMISSION│      │  CONTEXT │      │  SESSION │           │
-      │ │  ENGINE  │      │  BUILDER │      │   STORE  │           │
-      │ └──────────┘      └──────────┘      └──────────┘           │
-      │    ▲                       │                       ▲       │
-      │    └───────────────────────┼───────────────────────┘       │
-      │                            │                               │
-      └────────────────────────────┼───────────────────────────────┘
-                                   │
-              ┌────────────────────┼────────────────────┐
-              │                    │                    │
-              ▼                    ▼                    ▼
-        ┌──────────┐        ┌──────────┐        ┌──────────┐
-        │  Config  │        │  Skills  │        │   Utils  │
-        │  Manager │        │  System  │        │   Layer  │
-        └──────────┘        └──────────┘        └──────────┘
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                               NEXUS CLI                                         │
+│                     (commander · TUI · streaming)                               │
+└────────────────────┬────────────────────────────────────────────────────────────┘
+                     │
+┌────────────────────┼────────────────────────────────────────────────────────────┐
+│                ┌────┴────┐                                                    │
+│                │ Play-   │                                                    │
+│                │ ground  │                                                    │
+│                └────┬────┘                                                    │
+│                     │                                                        │
+│    ┌────────────────┼────────────────┐                                        │
+│    │                │                │                                        │
+│    ▼                ▼                ▼                                        │
+│ ┌────────┐    ┌──────────┐      ┌──────────┐                                │
+│ │  TOOLS │◄───┤  HARNESS │─────▶│ PROVIDER │                                │
+│ │ Engine │    │   Engine │      │  Abstr.  │                                │
+│ └───┬────┘    └────┬─────┘      └──────────┘                                │
+│     │             │                                                       │
+│     │    ┌────────┴────────┐                                             │
+│     │    │                 │                                             │
+│     ▼    ▼                 ▼                                             │
+│ ┌──────────┐      ┌──────────┐      ┌──────────┐                       │
+│ │ PERMISSION│      │  CONTEXT │      │  SESSION │                       │
+│ │  ENGINE  │      │  BUILDER │      │   STORE  │                       │
+│ └──────────┘      └──────────┘      └──────────┘                       │
+│    ▲                       │                       ▲                     │
+│    └───────────────────────┼───────────────────────┘                     │
+│                            │                                              │
+└────────────────────────────┼───────────────────────────────────────────────┘
+                             │
+              ┌──────────────┼──────────────┐
+              │              │              │
+              ▼              ▼              ▼
+        ┌──────────┐    ┌──────────┐    ┌──────────┐
+        │  Config  │    │  Skills  │    │   Utils  │
+        │  Manager │    │  System  │    │   Layer  │
+        └──────────┘    └──────────┘    └──────────┘
 ```
 
 </div>
@@ -221,22 +214,22 @@ Three context strategies: `truncate` · `summarize` · `compact`
 A full terminal AI playground with slash commands, skills, and session management:
 
 ```
-  ╭──────────────────────────────────────────────────────────────────╮
-  │  NEXUS Playground                          claude/sonnet-4     │
-  ├──────────────────────────────────────────────────────────────────┤
-  │                                                                  │
-  │  You: Write a function to sort an array                          │
-  │                                                                  │
-  │  Assistant: I'll write a merge sort implementation...            │
-  │    [read_file] src/utils/sort.ts ✓                                │
-  │    [write_file] src/utils/sort.ts ✓                               │
-  │                                                                  │
-  │    Here's the implementation with O(n log n) complexity...       │
-  │                                                                  │
-  ├──────────────────────────────────────────────────────────────────┤
-  │  ▸ model: claude/sonnet-4-20250514   ▸ mode: normal   ▸ mode   │
-  │  Tokens: 1,247  │  Cost: $0.0001  │  Iterations: 3              │
-  ╰──────────────────────────────────────────────────────────────────╯
+╭──────────────────────────────────────────────────────────────────────────────────╮
+│  NEXUS Playground                        claude/sonnet-4-20250514           ⚙   │
+├──────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  You: Write a function to sort an array                                          │
+│                                                                                  │
+│  Assistant: I'll write a merge sort implementation...                            │
+│    [read_file] src/utils/sort.ts ✓                                                │
+│    [write_file] src/utils/sort.ts ✓                                               │
+│                                                                                  │
+│    Here's the implementation with O(n log n) complexity...                       │
+│                                                                                  │
+├──────────────────────────────────────────────────────────────────────────────────┤
+│  ▸ model: claude/sonnet-4-20250514   ▸ mode: normal   ▸ session: a1b2c3d4       │
+│  Tokens: 1,247  │  Cost: $0.0001  │  Iterations: 3  │  Time: 2.4s               │
+╰──────────────────────────────────────────────────────────────────────────────────╯
 ```
 
 - **Streaming UI** — live text rendering with token/cost/iteration tracking
@@ -279,24 +272,61 @@ Type-safe config manager with deep-copy isolation (no shared-state mutations):
 <div align="center">
 
 ```
-  ┌────────────────────────────────────────────────────────────────────┐
-  │  ╔════════════════════════════════════════════════════════════╗   │
-  │  ║  NEXUS CLI                 commander · tui · streaming     ║   │
-  │  ╠════════════════════════════════════════════════════════════╣   │
-  │  ║  Config · Sessions · Paths · Utils          persistent state║   │
-  │  ╠════════════════════════════════════════════════════════════╣   │
-  │  ║  Agent Harness · Context Builder · Permission Engine  orches║   │
-  │  ╠════════════════════════════════════════════════════════════╣   │
-  │  ║  Providers  (OpenRouter · Anthropic · OpenAI · Ollama…) mod ║   │
-  │  ╠════════════════════════════════════════════════════════════╣   │
-  │  ║  Tools  (filesystem · terminal · git · 11 built-in) execu  ║   │
-  │  ╠════════════════════════════════════════════════════════════╣   │
-  │  ║  Skills · Playground · MCP · Plugins · Workflows · Agents  ║   │
-  │  ╚════════════════════════════════════════════════════════════╝   │
-  └────────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│  ╔════════════════════════════════════════════════════════════════════════════╗  │
+│  ║  NEXUS CLI                 commander · tui · streaming                     ║  │
+│  ╠════════════════════════════════════════════════════════════════════════════╣  │
+│  ║  Config · Sessions · Paths · Utils              persistent state            ║  │
+│  ╠════════════════════════════════════════════════════════════════════════════╣  │
+│  ║  Agent Harness · Context Builder · Permission Engine    orchestration       ║  │
+│  ╠════════════════════════════════════════════════════════════════════════════╣  │
+│  ║  Providers  (OpenRouter · Anthropic · OpenAI · Ollama…) modules             ║  │
+│  ╠════════════════════════════════════════════════════════════════════════════╣  │
+│  ║  Tools  (filesystem · terminal · git · 11 built-in) executors               ║  │
+│  ╠════════════════════════════════════════════════════════════════════════════╣  │
+│  ║  Skills · Playground · MCP · Plugins · Workflows · Agents                   ║  │
+│  ╚════════════════════════════════════════════════════════════════════════════╝  │
+└──────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 </div>
+
+---
+
+## First Run — Dashboard
+
+<div align="center">
+
+```
+  ╔══════════════════════════════════════════════════════════════════════════════╗
+  ║                                                                              ║
+  ║    ┌──────────────────────────────────────────────────────────────────┐      ║
+  ║    │  NEXUS v0.1.0 — Universal AI Developer Platform                 │      ║
+  ║    │                                                                  │      ║
+  ║    │  ⚙ CONFIGURATION          📁 PROJECT                           │      ║
+  ║    │    Provider:    openrouter     Path:     my-project              │      ║
+  ║    │    Model:       claude/sonnet  Full:    ~/code/my-project        │      ║
+  ║    │    Mode:        normal         Language: typescript              │      ║
+  ║    │    Streaming:   enabled                                    │      ║
+  ║    │                                                                  │      ║
+  ║    │  🔧 TOOLS             ⚡ SKILLS          💾 SESSION              │      ║
+  ║    │    Filesystem: 6       Loaded: 12       ID:    a1b2c3d4          │      ║
+  ║    │    Terminal:   1       Groups: 5        Total: 3 sessions        │      ║
+  ║    │    Git:        4       Hints: add to   Storage: ~/.nexus/        │      ║
+  ║    │                                                                  │      ║
+  ║    │  🧠 CAPABILITIES     🚀 QUICK START                              │      ║
+  ║    │    streaming · toolCalling · image  Type a message to chat       │      ║
+  ║    │    maxContext: 128,000             /help  · /model  · /quit      │      ║
+  ║    └──────────────────────────────────────────────────────────────────┘      ║
+  ║                                                                              ║
+  ║    ▸ model: claude/sonnet-4-20250514  ▸ provider: openrouter  ▸ session     │
+  ║    ▸ tokens: 0  │  cost: $0.0000  │  iterations: 0  │  time: 0s             │
+  ╚══════════════════════════════════════════════════════════════════════════════╝
+```
+
+</div>
+
+> *Illustrative terminal output — actual TUI may vary.*
 
 ---
 
@@ -323,34 +353,6 @@ nexus doctor
 # Start an interactive session
 nexus
 ```
-
----
-
-## First Run
-
-<div align="center">
-
-```
-  ╭────────────────────────────────────────────────────────────╮
-  │                                                            │
-  │    ┌──────────────────────────────────────────────────┐    │
-  │    │                                                  │    │
-  │    │   NEXUS          claude/sonnet-4-20250514        │    │
-  │    │                                                  │    │
-  │    │  > Type your request and press Enter...          │    │
-  │    │                                                  │    │
-  │    │                                                  │    │
-  │    └──────────────────────────────────────────────────┘    │
-  │                                                            │
-  │    ▸ model: claude/sonnet-4-20250514  ▸ provider: openrouter │
-  │    ▸ tokens: 0  │  cost: $0.0000  │  iterations: 0          │
-  │                                                            │
-  ╰────────────────────────────────────────────────────────────╯
-```
-
-</div>
-
-> *Illustrative terminal output — actual TUI may vary.*
 
 ---
 
@@ -414,36 +416,36 @@ nexus --no-stream
 <div align="center">
 
 ```
-  ┌────────────────────────────────────────────────────────────────┐
-  │  ╔═══ SESSION MANAGEMENT ═══════════════════════════════════╗  │
-  │  ║  /new          Start a new session                      ║  │
-  │  ║  /sessions     List all sessions                        ║  │
-  │  ║  /switch       Switch to another session                 ║  │
-  │  ║  /save         Save current session                      ║  │
-  │  ║  /history      Show input history                        ║  │
-  │  ║  /clear        Clear conversation                        ║  │
-  │  ║  /title        Set session title                         ║  │
-  │  ║  /quit         Exit playground                            ║  │
-  │  ╚══════════════════════════════════════════════════════════╝  │
-  │                                                                │
-  │  ╔═══ MODEL & PROVIDER ══════════════════════════════════════╗  │
-  │  ║  /model        Check or change model                      ║  │
-  │  ║  /models       List available models                       ║  │
-  │  ║  /provider     Check or change provider                    ║  │
-  │  ║  /providers    List configured providers                    ║  │
-  │  ╚══════════════════════════════════════════════════════════╝  │
-  │                                                                │
-  │  ╔═══ INFO & DIAGNOSTICS ════════════════════════════════════╗  │
-  │  ║  /help         Show available commands                    ║  │
-  │  ║  /tools        List available tools                        ║  │
-  │  ║  /permissions  Show permission policies                    ║  │
-  │  ║  /context      View assembled context                      ║  │
-  │  ║  /project      Show project info                          ║  │
-  │  ║  /doctor       Run diagnostics                             ║  │
-  │  ║  /skills       List installed skills                       ║  │
-  │  ║  /cost         Show token/cost info                        ║  │
-  │  ╚══════════════════════════════════════════════════════════╝  │
-  └────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│  ╔═══ SESSION MANAGEMENT ═══════════════════════════════════════════════════╗  │
+│  ║  /new          Start a new session                                      ║  │
+│  ║  /sessions     List all sessions                                        ║  │
+│  ║  /switch       Switch to another session                                 ║  │
+│  ║  /save         Save current session                                      ║  │
+│  ║  /history      Show input history                                        ║  │
+│  ║  /clear        Clear conversation                                        ║  │
+│  ║  /title        Set session title                                         ║  │
+│  ║  /quit         Exit playground                                            ║  │
+│  ╚══════════════════════════════════════════════════════════════════════════╝  │
+│                                                                                │
+│  ╔═══ MODEL & PROVIDER ══════════════════════════════════════════════════════╗  │
+│  ║  /model        Check or change model                                      ║  │
+│  ║  /models       List available models                                       ║  │
+│  ║  /provider     Check or change provider                                    ║  │
+│  ║  /providers    List configured providers                                    ║  │
+│  ╚══════════════════════════════════════════════════════════════════════════╝  │
+│                                                                                │
+│  ╔═══ INFO & DIAGNOSTICS ═════════════════════════════════════════════════════╣  │
+│  ║  /help         Show available commands                                      ║  │
+│  ║  /tools        List available tools                                         ║  │
+│  ║  /permissions  Show permission policies                                      ║  │
+│  ║  /context      View assembled context                                       ║  │
+│  ║  /project      Show project info                                            ║  │
+│  ║  /doctor       Run diagnostics                                              ║  │
+│  ║  /skills       List installed skills                                        ║  │
+│  ║  /cost         Show token/cost info                                         ║  │
+│  ╚══════════════════════════════════════════════════════════════════════════╝  │
+└──────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 </div>
@@ -654,39 +656,39 @@ npm install -g nexus
 <div align="center">
 
 ```
-  nexus/
-  ├── bin/nexus.js            # CLI entry point
-  ├── src/
-  │   ├── cli/
-  │   │   ├── index.ts        # Commander.js command definitions
-  │   │   └── playground/     # Interactive session system
-  │   │       ├── Playground.ts  # Main orchestrator
-  │   │       ├── commands.ts    # 21+ slash commands
-  │   │       ├── registry.ts    # Command registry
-  │   │       ├── parser.ts      # Slash command parsing
-  │   │       ├── input.ts       # readline + arrow keys
-  │   │       ├── renderer.ts    # ANSI frame rendering
-  │   │       ├── types.ts       # Core types
-  │   │       └── welcome.ts     # ASCII banner
-  │   ├── skills/             # Skills discovery system
-  │   │   ├── SkillManager.ts
-  │   │   └── index.ts
-  │   ├── config/             # Config manager & path resolution
-  │   ├── context/            # Context assembly & truncation
-  │   ├── harness/            # Agent loop orchestration
-  │   ├── permissions/        # Permission engine & file store
-  │   ├── providers/          # Provider implementations
-  │   ├── sessions/           # Session persistence
-  │   ├── tools/              # Tool definitions & executor
-  │   ├── tui/                # Terminal UI renderer
-  │   ├── types/              # Core type system
-  │   └── utils/              # FS helpers & logger
-  ├── tests/                  # 71 tests across 12 suites
-  │   ├── playground/         # New: parser, registry, skills
-  │   └── ...                 # Existing test suites
-  ├── dist/                   # Compiled output
-  ├── package.json
-  └── tsconfig.json
+nexus/
+├── bin/nexus.js            # CLI entry point
+├── src/
+│   ├── cli/
+│   │   ├── index.ts        # Commander.js command definitions
+│   │   └── playground/     # Interactive session system
+│   │       ├── Playground.ts  # Main orchestrator
+│   │       ├── commands.ts    # 21+ slash commands
+│   │       ├── registry.ts    # Command registry
+│   │       ├── parser.ts      # Slash command parsing
+│   │       ├── input.ts       # readline + arrow keys
+│   │       ├── renderer.ts    # ANSI frame rendering
+│   │       ├── types.ts       # Core types
+│   │       └── welcome.ts     # Hermes-style dashboard
+│   ├── skills/             # Skills discovery system
+│   │   ├── SkillManager.ts
+│   │   └── index.ts
+│   ├── config/             # Config manager & path resolution
+│   ├── context/            # Context assembly & truncation
+│   ├── harness/            # Agent loop orchestration
+│   ├── permissions/        # Permission engine & file store
+│   ├── providers/          # Provider implementations
+│   ├── sessions/           # Session persistence
+│   ├── tools/              # Tool definitions & executor
+│   ├── tui/                # Terminal UI renderer
+│   ├── types/              # Core type system
+│   └── utils/              # FS helpers & logger
+├── tests/                  # 71 tests across 12 suites
+│   ├── playground/         # New: parser, registry, skills
+│   └── ...                 # Existing test suites
+├── dist/                   # Compiled output
+├── package.json
+└── tsconfig.json
 ```
 
 </div>
@@ -698,22 +700,22 @@ npm install -g nexus
 <div align="center">
 
 ```
-  ┌──────────────────────────────────────────────────────────────────┐
-  │  npm test                                                          │
-  ├──────────────────────────────────────────────────────────────────┤
-  │  ▶ CLI Dispatch (Regression)                                      │
-  │    ✔ should NOT silently exit when run with no args               │
-  │    ✔ should show provider hint for nexus chat alias               │
-  │    ✔ should show provider hint for nexus run alias                │
-  │    ✔ should show help for nexus --help                            │
-  │    ✔ should list providers command output                         │
-  │    ✔ should suggest how to add a provider                         │
-  ├──────────────────────────────────────────────────────────────────┤
-  │  ▶ ConfigManager    ▶ ContextBuilder     ▶ AgentHarness           │
-  │  ▶ PermissionEngine ▶ SessionStore     ▶ Tool Executor            │
-  │  ▶ Provider Types  ▶ Tool Types                                 │
-  │  ▶ SlashCommand Parser  ▶ SlashCommandRegistry  ▶ SkillManager    │
-  └──────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│  npm test                                                                        │
+├──────────────────────────────────────────────────────────────────────────────────┤
+│  ▶ CLI Dispatch (Regression)                                                     │
+│    ✔ should NOT silently exit when run with no args                              │
+│    ✔ should show provider hint for nexus chat alias                              │
+│    ✔ should show provider hint for nexus run alias                               │
+│    ✔ should show help for nexus --help                                           │
+│    ✔ should list providers command output                                        │
+│    ✔ should suggest how to add a provider                                        │
+├──────────────────────────────────────────────────────────────────────────────────┤
+│  ▶ ConfigManager    ▶ ContextBuilder     ▶ AgentHarness                          │
+│  ▶ PermissionEngine ▶ SessionStore     ▶ Tool Executor                           │
+│  ▶ Provider Types  ▶ Tool Types                                            │
+│  ▶ SlashCommand Parser  ▶ SlashCommandRegistry  ▶ SkillManager                   │
+└──────────────────────────────────────────────────────────────────────────────────┘
 
   ℹ tests 71
   ℹ suites 12
@@ -741,6 +743,7 @@ All 71 tests pass consistently. Run with `npm test` or `npm run test:watch`.
 | ✅ | Config manager (global + project) |
 | ✅ | Interactive playground with slash commands |
 | ✅ | Skills system (discovery, loading, command registry) |
+| ✅ | Hermes-style dashboard with 3D layered boxes |
 | ✅ | 71 passing tests |
 | 🗺 | MCP server integration |
 | 🗺 | Plugin system |
@@ -757,20 +760,20 @@ All 71 tests pass consistently. Run with `npm test` or `npm run test:watch`.
 <div align="center">
 
 ```
-  ┌──────────────────────────────────────────────────────────────────┐
-  │                                                                  │
-  │   NEXUS v0.1.0 — Early development                               │
-  │                                                                  │
-  │   A working, tested foundation for a universal AI development    │
-  │   platform. The core runtime — providers, harness, tools,         │
-  │   permissions, context, sessions, playground, and skills —        │
-  │   is implemented and tested.                                     │
-  │                                                                  │
-  │   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━    │
-  │                                                                  │
-  │   71 tests · 12 suites · 18 files added · TypeScript strict     │
-  │                                                                  │
-  └──────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                  │
+│   NEXUS v0.1.0 — Early development                                               │
+│                                                                                  │
+│   A working, tested foundation for a universal AI development                    │
+│   platform. The core runtime — providers, harness, tools,                        │
+│   permissions, context, sessions, playground, and skills —                       │
+│   is implemented and tested.                                                     │
+│                                                                                  │
+│   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━    │
+│                                                                                  │
+│   71 tests · 12 suites · TypeScript strict · Hermes-style dashboard              │
+│                                                                                  │
+└──────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 </div>
@@ -806,20 +809,20 @@ Contributions are welcome. Here's how to get started:
 <div align="center">
 
 ```
-  ╔═══════════════════════════════════════════════════════════════╗
-  ║                                                               ║
-  ║    ╔═══════════════════════════════════════════════════╗      ║
-  ║    ║                                                  ║      ║
-  ║    ║      Build with every model.                     ║      ║
-  ║    ║      Route through every capability.             ║      ║
-  ║    ║      Operate from one terminal.                  ║      ║
-  ║    ║                                                  ║      ║
-  ║    ╚═══════════════════════════════════════════════════╝      ║
-  ║                                                               ║
-  ║                                                               ║
-  ║    github.com/qtjg/nexus  ·  npmjs.com/package/nexus  ·  v0.1.0║
-  ║                                                               ║
-  ╚═══════════════════════════════════════════════════════════════╝
+╔══════════════════════════════════════════════════════════════════════════════════╗
+║                                                                                  ║
+║    ┌──────────────────────────────────────────────────────────────────────┐      ║
+║    │                                                                      │      ║
+║    │      Build with every model.                                       │      ║
+║    │      Route through every capability.                                │      ║
+║    │      Operate from one terminal.                                     │      ║
+║    │                                                                      │      ║
+║    └──────────────────────────────────────────────────────────────────────┘      ║
+║                                                                                  ║
+║                                                                              ║
+║    github.com/qtjg/nexus  ·  npmjs.com/package/nexus  ·  v0.1.0              ║
+║                                                                                  ║
+╚══════════════════════════════════════════════════════════════════════════════════╝
 ```
 
 </div>

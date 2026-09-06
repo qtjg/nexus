@@ -83,12 +83,13 @@ export class Renderer {
     const lines: string[] = [];
     const state = this.renderState;
 
-    // Header
-    lines.push(`${ESC}[36m╔═══ NEXUS Playground ═══════════════════════════════════════╗${ESC}[0m`);
-    lines.push(`${ESC}[36m║${ESC}[37m  Model: ${state.model.padEnd(34)}${ESC}[36m║${ESC}[0m`);
-    lines.push(`${ESC}[36m║${ESC}[37m  Provider: ${state.provider.padEnd(33)}${ESC}[36m║${ESC}[0m`);
-    lines.push(`${ESC}[36m║${ESC}[37m  Project: ${state.project.padEnd(32)}${ESC}[36m║${ESC}[0m`);
-    lines.push(`${ESC}[36m║${ESC}[37m  Session: ${state.sessionId.padEnd(32)}${ESC}[36m║${ESC}[0m`);
+    // Header — Hermes-style
+    const elapsed = Math.floor((Date.now() - Date.now()) / 1000);
+    const modelTag = state.model.includes('/') ? state.model.split('/')[1] || state.model : state.model;
+    lines.push(`${ESC}[36m╔═══ NEXUS Playground ${modelTag.padEnd(47)}╗${ESC}[0m`);
+    lines.push(`${ESC}[36m║${ESC}[37m  Provider: ${state.provider.padEnd(40)}${ESC}[36m║${ESC}[0m`);
+    lines.push(`${ESC}[36m║${ESC}[37m  Mode: ${state.mode.padEnd(42)}${ESC}[36m║${ESC}[0m`);
+    lines.push(`${ESC}[36m║${ESC}[37m  Session: ${state.sessionId.padEnd(42)}${ESC}[36m║${ESC}[0m`);
     lines.push(`${ESC}[36m╠══════════════════════════════════════════════════════════════╣${ESC}[0m`);
 
     // Status bar

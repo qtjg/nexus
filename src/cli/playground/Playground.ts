@@ -169,7 +169,7 @@ export class Playground {
     });
 
     // Show welcome
-    showWelcome(this.renderer);
+    await showWelcome(this.renderer, this.config, this.sessionStore, this.projectPath);
 
     if (this.providerId === 'none') {
       showNoProviderWarning();
