@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420">
+  <defs>
+    <radialGradient id="bg2" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#0d1117"/>
+      <stop offset="100%" stop-color="#010409"/>
+    </radialGradient>
+    <linearGradient id="layerGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#161b22"/>
+      <stop offset="100%" stop-color="#0d1117"/>
+    </linearGradient>
+    <linearGradient id="blueLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#58a6ff" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#58a6ff" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#58a6ff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="420" fill="url(#bg2)" rx="12"/>
+
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" fill="#484f58" font-family="system-ui,-apple-system,sans-serif" font-size="9" letter-spacing="4">NEXUS ARCHITECTURE FLOW</text>
+
+  <!-- Layer: USER -->
+  <rect x="250" y="50" width="300" height="44" rx="6" fill="#161b22" stroke="#388bfd" stroke-width="1.2"/>
+  <text x="400" y="71" text-anchor="middle" fill="#e6edf3" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="600" letter-spacing="2">USER</text>
+  <text x="400" y="87" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="8">Terminal · Session · Request</text>
+
+  <!-- Arrow down -->
+  <line x1="400" y1="94" x2="400" y2="110" stroke="#388bfd" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+  <!-- Layer: CLI -->
+  <rect x="200" y="114" width="400" height="44" rx="6" fill="#161b22" stroke="#58a6ff" stroke-width="1.2"/>
+  <text x="400" y="135" text-anchor="middle" fill="#e6edf3" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="600" letter-spacing="2">NEXUS CLI  ·  COMMAND ROUTER</text>
+  <text x="400" y="151" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="8">commander · provider init · model select · doctor</text>
+
+  <!-- Arrow down -->
+  <line x1="400" y1="158" x2="400" y2="174" stroke="#58a6ff" stroke-width="1.5"/>
+
+  <!-- Layer: PROVIDERS -->
+  <rect x="100" y="178" width="600" height="56" rx="6" fill="#161b22" stroke="#3fb950" stroke-width="1.2"/>
+  <text x="400" y="199" text-anchor="middle" fill="#e6edf3" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="600" letter-spacing="2">PROVIDER LAYER</text>
+  <text x="400" y="215" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="8">OpenRouter  ·  Anthropic  ·  OpenAI  ·  Ollama  ·  LM Studio  ·  Custom</text>
+
+  <!-- Small provider badges inside -->
+  <rect x="130" y="226" width="72" height="20" rx="3" fill="#0d1117" stroke="#30363d"/>
+  <text x="166" y="240" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="8">OpenRouter</text>
+  <rect x="210" y="226" width="72" height="20" rx="3" fill="#0d1117" stroke="#30363d"/>
+  <text x="246" y="240" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="8">Anthropic</text>
+  <rect x="290" y="226" width="72" height="20" rx="3" fill="#0d1117" stroke="#30363d"/>
+  <text x="326" y="240" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="8">OpenAI</text>
+  <rect x="370" y="226" width="62" height="20" rx="3" fill="#0d1117" stroke="#30363d"/>
+  <text x="401" y="240" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="8">Ollama</text>
+  <rect x="440" y="226" width="82" height="20" rx="3" fill="#0d1117" stroke="#30363d"/>
+  <text x="481" y="240" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="8">LM Studio</text>
+  <rect x="530" y="226" width="60" height="20" rx="3" fill="#0d1117" stroke="#30363d"/>
+  <text x="560" y="240" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="8">Custom</text>
+
+  <!-- Arrow down -->
+  <line x1="400" y1="234" x2="400" y2="252" stroke="#3fb950" stroke-width="1.5"/>
+
+  <!-- Layer: HARNES + CONTEXT -->
+  <rect x="100" y="256" width="600" height="60" rx="6" fill="#161b22" stroke="#d2a8ff" stroke-width="1.2"/>
+  <text x="250" y="277" text-anchor="middle" fill="#e6edf3" font-family="system-ui,-apple-system,sans-serif" font-size="11" font-weight="600" letter-spacing="1">AGENT HARNES</text>
+  <text x="250" y="293" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="8">Loop · Tool Calls · Permissions · Streaming · Cost Tracking</text>
+  <text x="520" y="277" text-anchor="middle" fill="#e6edf3" font-family="system-ui,-apple-system,sans-serif" font-size="11" font-weight="600" letter-spacing="1">CONTEXT BUILDER</text>
+  <text x="520" y="293" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="8">Project · Git · Files · Truncation · Strategy</text>
+  <line x1="395" y1="262" x2="395" y2="310" stroke="#30363d" stroke-width="1"/>
+
+  <!-- Arrow down -->
+  <line x1="400" y1="316" x2="400" y2="332" stroke="#d2a8ff" stroke-width="1.5"/>
+
+  <!-- Layer: TOOLS -->
+  <rect x="100" y="336" width="600" height="50" rx="6" fill="#161b22" stroke="#f0883e" stroke-width="1.2"/>
+  <text x="400" y="357" text-anchor="middle" fill="#e6edf3" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="600" letter-spacing="2">BUILTIN TOOLS</text>
+  <text x="400" y="373" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="8">read_file  write_file  edit_file  list_dir  search_files  execute_command  git_status  git_diff  git_log  git_branch  file_info</text>
+
+  <!-- Side: PERMISSIONS panel -->
+  <rect x="20" y="178" width="70" height="208" rx="6" fill="#161b22" stroke="#f85149" stroke-width="1" opacity="0.9"/>
+  <text x="55" y="198" text-anchor="middle" fill="#f85149" font-family="system-ui,-apple-system,sans-serif" font-size="8" font-weight="600" letter-spacing="1">PERM</text>
+  <text x="55" y="214" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="7">safe</text>
+  <text x="55" y="230" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="7">normal</text>
+  <text x="55" y="246" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="7">sandbox</text>
+  <text x="55" y="262" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="7">relaxed</text>
+  <text x="55" y="284" text-anchor="middle" fill="#484f58" font-family="system-ui,-apple-system,sans-serif" font-size="6">───</text>
+  <text x="55" y="300" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="7">fs.read</text>
+  <text x="55" y="316" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="7">fs.write</text>
+  <text x="55" y="332" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="7">term.exec</text>
+  <text x="55" y="348" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="7">git.read</text>
+  <text x="55" y="364" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="7">net.req</text>
+  <text x="55" y="388" text-anchor="middle" fill="#484f58" font-family="system-ui,-apple-system,sans-serif" font-size="7">audit</text>
+
+  <!-- Side: SESSIONS panel -->
+  <rect x="710" y="178" width="70" height="208" rx="6" fill="#161b22" stroke="#79c0ff" stroke-width="1" opacity="0.9"/>
+  <text x="745" y="198" text-anchor="middle" fill="#79c0ff" font-family="system-ui,-apple-system,sans-serif" font-size="8" font-weight="600" letter-spacing="1">SESSION</text>
+  <text x="745" y="220" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="7">save</text>
+  <text x="745" y="236" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="7">load</text>
+  <text x="745" y="252" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="7">list</text>
+  <text x="745" y="268" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="7">append</text>
+  <text x="745" y="284" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="7">update</text>
+  <text x="745" y="300" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="7">delete</text>
+  <text x="745" y="322" text-anchor="middle" fill="#484f58" font-family="system-ui,-apple-system,sans-serif" font-size="6">───</text>
+  <text x="745" y="344" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="7">history</text>
+  <text x="745" y="360" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="7">messages</text>
+  <text x="745" y="376" text-anchor="middle" fill="#8b949e" font-family="system-ui,-apple-system,sans-serif" font-size="7">persist</text>
+</svg>
