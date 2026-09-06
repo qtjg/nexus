@@ -1,19 +1,19 @@
 #!/usr/bin/env node
 // NEXUS CLI Entry Point
+// Rewritten to delegate interactive sessions to the Playground orchestrator
 
 import { Command } from 'commander';
 import chalk from 'chalk';
-import { createConfig } from '../config/index.js';
+import { createConfig, type ConfigManager } from '../config/index.js';
 import { createProvider, type Provider } from '../providers/index.js';
 import { BUILTIN_TOOLS } from '../tools/definitions.js';
-import { AgentHarness, type HarnessOptions } from '../harness/index.js';
 import { PermissionEngine } from '../permissions/engine.js';
 import { ContextBuilder } from '../context/builder.js';
 import { SessionStore } from '../sessions/store.js';
 import { detectProjectType } from '../utils/fs.js';
 import { logger } from '../utils/logger.js';
+import { Playground } from './playground/Playground.js';
 import * as path from 'path';
-import * as os from 'os';
 
 const program = new Command();
 
@@ -23,9 +23,6 @@ program
   .version('0.1.0');
 
 // ─── Main interactive command ────────────────────────────────
-// Commander v4 does not fire the program's default action when subcommands exist.
-// We define the options here so they appear in help, but the action is dispatched
-// manually after parse() when no subcommand matched.
 program
   .description('Start interactive NEXUS session')
   .option('-m, --model <model>', 'Model to use')
@@ -68,7 +65,7 @@ program
     const existing = config.getProvider(id);
 
     if (opts.apiKey || opts.baseUrl) {
-      const apiKey = opts.apiKey || process.env[`${id.toUpperCase()}_API_KEY`];
+      const apiKey = opts.apiKey || process.env[`${id.toUpperCase()}_API_KEY`] || process.env['API_KEY'];
       if (!apiKey) {
         console.error(chalk.red(`API key required. Use: --api-key $KEY`));
         process.exit(1);
@@ -88,7 +85,6 @@ program
       config.addProvider(providerConfig);
       console.log(chalk.green(`Provider "${id}" configured successfully.`));
 
-      // Auto-add default model
       const defaultModel = getDefaultModel(id, opts.model);
       if (defaultModel) {
         const model = {
@@ -181,11 +177,9 @@ program
     const config = createConfig();
     console.log(chalk.cyan('\nNEXUS Doctor\n'));
 
-    // Config
     const hasConfig = config.get().providers.length > 0;
     console.log(`${hasConfig ? chalk.green('✓') : chalk.red('✗')} Configuration: ${hasConfig ? 'OK' : 'No providers configured'}`);
 
-    // Providers
     for (const p of config.getAllProviders()) {
       try {
         const provider = createProvider(p);
@@ -196,18 +190,14 @@ program
       }
     }
 
-    // Models
     const models = config.getAllModels();
     console.log(`${models.length > 0 ? chalk.green('✓') : chalk.yellow('!')} Models: ${models.length} configured`);
 
-    // Directories
     const { getNexusDir } = await import('../config/paths.js');
     const nexusDir = getNexusDir();
     console.log(`${chalk.green('✓')} Nexus dir: ${nexusDir}`);
 
-    // Tools
     console.log(`${chalk.green('✓')} Built-in tools: ${BUILTIN_TOOLS.length}`);
-
     console.log('');
   });
 
@@ -239,7 +229,7 @@ program
   .alias('c')
   .description('Alias for interactive session')
   .action(() => {
-    process.argv.splice(2, 1); // Remove 'chat'
+    process.argv.splice(2, 1);
     program.parse(process.argv);
   });
 
@@ -257,134 +247,12 @@ program.parse(process.argv);
 
 // Commander v4 does not fire the program's default action when subcommands are defined.
 // If no subcommand matched (args is empty) and help was not requested, dispatch to
-// the interactive session with the program-level options.
+// the interactive Playground with the program-level options.
 if (program.args.length === 0) {
   await startInteractiveSession(program.opts());
 }
 
 // ─── Helper Functions ────────────────────────────────────────
-
-function resolveModel(config: ReturnType<typeof createConfig>, requested?: string): string {
-  if (requested) {
-    const model = config.getModel(requested);
-    return model?.id || requested;
-  }
-  return config.get().defaultModel || 'openrouter/claude-sonnet-4-20250514';
-}
-
-function buildSystemPrompt(
-  config: ReturnType<typeof createConfig>,
-  projectInfo: Awaited<ReturnType<typeof detectProjectType>>,
-  providerId: string,
-  modelId: string
-): string {
-  const projectContext = projectInfo.language
-    ? `You are working in a ${projectInfo.language}${projectInfo.framework ? ` ${projectInfo.framework}` : ''} project.\n`
-    : '';
-
-  return `You are NEXUS, a universal AI developer assistant.
-
-${projectContext}You have access to the following tools:
-- read_file: Read file contents
-- write_file: Write files
-- edit_file: Edit files by string replacement
-- list_dir: List directory contents
-- search_files: Search for files
-- execute_command: Run shell commands
-- git_status: Check git status
-- git_diff: View changes
-- git_log: View commit history
-- git_branch: List branches
-- file_info: Get file metadata
-
-Guidelines:
-- Always be helpful, precise, and professional.
-- Explain your reasoning before making changes.
-- Use tools to inspect the project before making modifications.
-- Respect permissions — never execute destructive operations without approval.
-- When editing files, use edit_file with exact string matches.
-- After making changes, suggest running tests or verification.
-- Keep responses concise but thorough.
-
-Current model: ${modelId}
-Current provider: ${providerId}`;
-}
-
-function getDefaultBaseUrl(id: string): string {
-  const bases: Record<string, string> = {
-    openrouter: 'https://openrouter.ai/api/v1',
-    anthropic: 'https://api.anthropic.com',
-    openai: 'https://api.openai.com/v1',
-    google: 'https://generativelanguage.googleapis.com/v1beta',
-    deepseek: 'https://api.deepseek.com/v1',
-    ollama: 'http://localhost:11434/v1',
-    lmstudio: 'http://localhost:1234/v1',
-  };
-  return bases[id] ?? 'https://api.openai.com/v1';
-}
-
-function getProviderCapabilities(id: string): import('../types/index.js').ProviderCapabilities {
-  const caps: Record<string, import('../types/index.js').ProviderCapabilities> = {
-    openrouter: {
-      streaming: true,
-      toolCalling: true,
-      structuredOutput: false,
-      imageSupport: false,
-      audioSupport: false,
-      embeddings: false,
-      maxContextWindow: 128000,
-    },
-    anthropic: {
-      streaming: true,
-      toolCalling: true,
-      structuredOutput: true,
-      imageSupport: true,
-      audioSupport: false,
-      embeddings: false,
-      maxContextWindow: 200000,
-    },
-    openai: {
-      streaming: true,
-      toolCalling: true,
-      structuredOutput: false,
-      imageSupport: false,
-      audioSupport: false,
-      embeddings: false,
-      maxContextWindow: 128000,
-    },
-    ollama: {
-      streaming: true,
-      toolCalling: true,
-      structuredOutput: false,
-      imageSupport: false,
-      audioSupport: false,
-      embeddings: false,
-      maxContextWindow: 128000,
-    },
-    lmstudio: {
-      streaming: true,
-      toolCalling: true,
-      structuredOutput: false,
-      imageSupport: false,
-      audioSupport: false,
-      embeddings: false,
-      maxContextWindow: 128000,
-    },
-  };
-  return caps[id] ?? caps.openrouter;
-}
-
-function getDefaultModel(id: string, override?: string): { id: string; contextWindow: number } | null {
-  if (override) return { id: override, contextWindow: 128000 };
-  const models: Record<string, { id: string; contextWindow: number }> = {
-    openrouter: { id: 'anthropic/claude-sonnet-4-20250514', contextWindow: 200000 },
-    anthropic: { id: 'claude-sonnet-4-20250514', contextWindow: 200000 },
-    openai: { id: 'gpt-4o', contextWindow: 128000 },
-    ollama: { id: 'llama3.2', contextWindow: 128000 },
-    lmstudio: { id: 'local-model', contextWindow: 128000 },
-  };
-  return models[id] ?? null;
-}
 
 async function startInteractiveSession(opts: {
   model?: string;
@@ -405,28 +273,39 @@ async function startInteractiveSession(opts: {
 
   // Resolve model and provider
   const model = resolveModel(config, opts.model);
-  const providerId = opts.provider || (config as any).config?.defaultProvider || 'openrouter';
-  const providerConfig = config.getProvider(providerId);
+  const providerId = opts.provider || config.get().defaultProvider || 'openrouter';
 
-  if (!providerConfig) {
-    console.error(chalk.red(`Provider not found: ${providerId}`));
-    console.error(chalk.yellow('Run: nexus provider add <provider> --api-key $API_KEY'));
-    process.exit(1);
-  }
+  // Determine permission mode
+  const permissionMode = opts.safe ? 'safe' : opts.sandbox ? 'sandbox' : 'normal';
 
   // Create provider
-  const provider = createProvider(providerConfig);
+  let provider: Provider;
+  let providerConfig = config.getProvider(providerId);
 
-  // Verify connectivity
-  const healthy = await provider.healthCheck();
-  if (!healthy) {
-    console.error(chalk.red(`Provider "${providerId}" is not reachable`));
-    console.error(chalk.yellow('Check your API key and network connection.'));
-    process.exit(1);
+  if (!providerConfig) {
+    if (providerId === 'none') {
+      provider = createNoProvider();
+    } else {
+      console.error(chalk.red(`Provider not found: ${providerId}`));
+      console.error(chalk.yellow('Run: nexus provider add <provider> --api-key $API_KEY'));
+      console.error(chalk.yellow('\n  Or start with no provider: nexus --provider none'));
+      process.exit(1);
+    }
+  } else {
+    provider = createProvider(providerConfig);
+
+    if (providerId !== 'none') {
+      const healthy = await provider.healthCheck();
+      if (!healthy) {
+        console.error(chalk.red(`Provider "${providerId}" is not reachable`));
+        console.error(chalk.yellow('Check your API key and network connection.'));
+        console.error(chalk.yellow('\n  Or start with no provider: nexus --provider none'));
+        process.exit(1);
+      }
+    }
   }
 
   // Setup permission engine
-  const permissionMode = opts.safe ? 'safe' : opts.sandbox ? 'sandbox' : 'normal';
   const permEngine = new PermissionEngine(undefined, permissionMode as any);
   config.setPermissionMode(permissionMode as any);
 
@@ -439,181 +318,103 @@ async function startInteractiveSession(opts: {
     detectedAt: new Date().toISOString(),
   });
 
-  // Setup session
-  const sessionStore = new SessionStore(projectPath);
-  const sessionId = `session_${Date.now()}`;
-  const session = {
-    id: sessionId,
-    projectId: projectPath,
-    name: `Session ${new Date().toLocaleString()}`,
-    status: 'active' as const,
+  // Launch Playground
+  const playground = new Playground({
     model,
     provider: providerId,
-    messages: [],
-    tools: BUILTIN_TOOLS.map((t) => t.name),
-    permissions: [],
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    metadata: {},
-  };
-  await sessionStore.save(session);
+    mode: permissionMode as any,
+    path: projectPath,
+    config,
+  });
 
-  // Create harness
-  const harnessOptions: HarnessOptions = {
-    provider,
-    model,
-    tools: BUILTIN_TOOLS,
-    permissionEngine: permEngine,
-    contextBuilder,
-    streaming: opts.stream ?? true,
-    systemPrompt: buildSystemPrompt(config, projectInfo, providerId, model),
-  };
+  // Handle Ctrl+C for graceful shutdown
+  process.on('SIGINT', () => {
+    playground.cancel();
+  });
+  process.on('SIGTERM', () => {
+    playground.cancel();
+  });
 
-  const harness = new AgentHarness(harnessOptions);
-
-  // Print welcome
-  console.log(chalk.cyan('\n  ╔═══════════════════════════════════════════════════╗'));
-  console.log(chalk.cyan('  ║') + chalk.white('  NEXUS — Universal AI Developer Platform         ' + chalk.cyan('║')));
-  console.log(chalk.cyan('  ║') + chalk.dim('  Model: ') + chalk.yellow(model) + chalk.cyan('  ║'));
-  console.log(chalk.cyan('  ║') + chalk.dim('  Provider: ') + chalk.yellow(providerId) + chalk.cyan('  ║'));
-  console.log(chalk.cyan('  ║') + chalk.dim('  Project: ') + chalk.yellow(projectPath) + chalk.cyan('  ║'));
-  console.log(chalk.cyan('  ║') + chalk.dim('  Mode: ') + chalk.yellow(permissionMode) + chalk.cyan('  ║'));
-  console.log(chalk.cyan('  ╚═══════════════════════════════════════════════════╝\n'));
-  console.log(chalk.dim('  Type your request and press Enter. Type /help for commands.\n'));
-
-  // Read from stdin (pipe or interactive)
-  await runInteractive(harness, sessionStore, sessionId, projectPath);
+  await playground.run();
 }
 
-async function runInteractive(harness: AgentHarness, sessionStore: SessionStore, sessionId: string, projectPath: string): Promise<void> {
-  const readline = await import('readline').catch(() => null);
-  if (!readline) {
-    // Fallback: read from stdin manually
-    await runWithStdin(harness, sessionStore, sessionId);
-    return;
+function resolveModel(config: ConfigManager, requested?: string): string {
+  if (requested) {
+    const model = config.getModel(requested);
+    return model?.id || requested;
   }
-
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-    prompt: '> ',
-  });
-
-  rl.prompt();
-
-  rl.on('line', async (line) => {
-    const input = line.trim();
-    if (!input) {
-      rl.prompt();
-      return;
-    }
-
-    // Handle slash commands
-    if (input.startsWith('/')) {
-      await handleSlashCommand(input, harness, sessionStore, sessionId);
-      rl.prompt();
-      return;
-    }
-
-    // Run agent
-    const stream = harness.run(input, sessionId, async (chunk) => {
-      if (chunk.type === 'text') {
-        process.stdout.write(chunk.content);
-      } else if (chunk.type === 'usage') {
-        // Show token count periodically
-      }
-    });
-
-    // Wait for completion
-    const state = await stream;
-
-    // Save session messages
-    for (const msg of state.messages) {
-      await sessionStore.appendMessage(sessionId, msg);
-    }
-
-    console.log('\n');
-    console.log(chalk.dim(`  Tokens: ${state.tokensUsed} | Iterations: ${state.iteration}`));
-    rl.prompt();
-  });
-
-  rl.on('close', async () => {
-    harness.cancel();
-    console.log(chalk.dim('\nSession ended.'));
-    process.exit(0);
-  });
+  return config.get().defaultModel || 'openrouter/claude-sonnet-4-20250514';
 }
 
-async function handleSlashCommand(
-  command: string,
-  harness: AgentHarness,
-  sessionStore: SessionStore,
-  sessionId: string
-): Promise<void> {
-  const parts = command.split(' ');
-  const cmd = parts[0].slice(1);
-
-  switch (cmd) {
-    case 'help':
-      console.log(chalk.dim('  /help      Show this help'));
-      console.log(chalk.dim('  /model     Change model'));
-      console.log(chalk.dim('  /provider  Change provider'));
-      console.log(chalk.dim('  /tools     List available tools'));
-      console.log(chalk.dim('  /permissions Show permission policies'));
-      console.log(chalk.dim('  /clear     Clear conversation'));
-      console.log(chalk.dim('  /exit      Exit NEXUS'));
-      break;
-    case 'model':
-      console.log(chalk.yellow(`  Current model: ${harness.getState().sessionId ? 'use "nexus model <id>" to change' : 'not set'}`));
-      break;
-    case 'tools':
-      console.log(chalk.cyan('\n  Available Tools:\n'));
-      for (const tool of BUILTIN_TOOLS) {
-        if (tool.enabled) {
-          console.log(`  ${chalk.bold(tool.name)}: ${tool.description}`);
-        }
-      }
-      console.log('');
-      break;
-    case 'permissions':
-      console.log(chalk.yellow('  Permission mode: see config'));
-      break;
-    case 'clear':
-      harness.reset();
-      console.log(chalk.dim('  Conversation cleared.'));
-      break;
-    case 'exit':
-      process.exit(0);
-      break;
-    default:
-      console.log(chalk.red(`  Unknown command: ${cmd}`));
-  }
+function getDefaultBaseUrl(id: string): string {
+  const bases: Record<string, string> = {
+    openrouter: 'https://openrouter.ai/api/v1',
+    anthropic: 'https://api.anthropic.com',
+    openai: 'https://api.openai.com/v1',
+    google: 'https://generativelanguage.googleapis.com/v1beta',
+    deepseek: 'https://api.deepseek.com/v1',
+    ollama: 'http://localhost:11434/v1',
+    lmstudio: 'http://localhost:1234/v1',
+  };
+  return bases[id] ?? 'https://api.openai.com/v1';
 }
 
-async function runWithStdin(harness: AgentHarness, sessionStore: SessionStore, sessionId: string): Promise<void> {
-  // Fallback for non-interactive mode
-  const chunks: string[] = [];
-  process.stdin.setEncoding('utf-8');
+function getProviderCapabilities(id: string): import('../types/index.js').ProviderCapabilities {
+  const caps: Record<string, import('../types/index.js').ProviderCapabilities> = {
+    openrouter: {
+      streaming: true, toolCalling: true, structuredOutput: false,
+      imageSupport: false, audioSupport: false, embeddings: false,
+      maxContextWindow: 128000,
+    },
+    anthropic: {
+      streaming: true, toolCalling: true, structuredOutput: true,
+      imageSupport: true, audioSupport: false, embeddings: false,
+      maxContextWindow: 200000,
+    },
+    openai: {
+      streaming: true, toolCalling: true, structuredOutput: false,
+      imageSupport: false, audioSupport: false, embeddings: false,
+      maxContextWindow: 128000,
+    },
+    ollama: {
+      streaming: true, toolCalling: true, structuredOutput: false,
+      imageSupport: false, audioSupport: false, embeddings: false,
+      maxContextWindow: 128000,
+    },
+    lmstudio: {
+      streaming: true, toolCalling: true, structuredOutput: false,
+      imageSupport: false, audioSupport: false, embeddings: false,
+      maxContextWindow: 128000,
+    },
+  };
+  return caps[id] ?? caps.openrouter;
+}
 
-  process.stdin.on('data', async (data: Buffer) => {
-    const input = data.toString().trim();
-    if (!input) return;
+function getDefaultModel(id: string, override?: string): { id: string; contextWindow: number } | null {
+  if (override) return { id: override, contextWindow: 128000 };
+  const models: Record<string, { id: string; contextWindow: number }> = {
+    openrouter: { id: 'anthropic/claude-sonnet-4-20250514', contextWindow: 200000 },
+    anthropic: { id: 'claude-sonnet-4-20250514', contextWindow: 200000 },
+    openai: { id: 'gpt-4o', contextWindow: 128000 },
+    ollama: { id: 'llama3.2', contextWindow: 128000 },
+    lmstudio: { id: 'local-model', contextWindow: 128000 },
+  };
+  return models[id] ?? null;
+}
 
-    if (input.startsWith('/')) {
-      // Handle slash commands (same as above)
-      return;
-    }
-
-    await harness.run(input, sessionId, async (chunk) => {
-      if (chunk.type === 'text') {
-        process.stdout.write(chunk.content);
-      }
-    });
-    console.log('\n');
-  });
-
-  process.stdin.on('end', () => {
-    console.log(chalk.dim('\nInput ended.'));
-    process.exit(0);
-  });
+function createNoProvider(): Provider {
+  return {
+    chat: async (_messages: any, _options: any) => ({
+      message: 'No AI provider configured. Add one with: nexus provider add openrouter --api-key $OPENROUTER_API_KEY',
+      usage: { input: 0, output: 0, total: 0 },
+      toolCalls: [],
+    }),
+    streamChat: async (_messages: any, _options: any, _onChunk: any) => ({
+      message: 'No AI provider configured. Add one with: nexus provider add openrouter --api-key $OPENROUTER_API_KEY',
+      usage: { input: 0, output: 0, total: 0 },
+      toolCalls: [],
+    }),
+    healthCheck: async () => false,
+    listModels: async () => [],
+  } as any;
 }

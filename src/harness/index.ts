@@ -111,11 +111,12 @@ export class AgentHarness {
   async run(
     userMessage: string,
     sessionId: string,
-    onChunk?: (chunk: StreamChunk) => void | Promise<void>
+    onChunk?: (chunk: StreamChunk) => void | Promise<void>,
+    initialMessages?: Message[]
   ): Promise<AgentState> {
     this.state.sessionId = sessionId;
     this.state.status = 'running';
-    this.state.messages = [];
+    this.state.messages = initialMessages ? [...initialMessages] : [];
     this.startTime = Date.now();
 
     this.emit('agent.started', { sessionId, userMessage });

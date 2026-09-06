@@ -11,7 +11,7 @@ git clone https://github.com/qtjg/nexus.git && cd nexus && npm install && npm ru
 ```
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-40%2F40-passing-green)](tests)
+[![Tests](https://img.shields.io/badge/tests-71%2F71-passing-green)](tests)
 [![TypeScript](https://img.shields.io/badge/typescript-5.7+-blue.svg)](tsconfig.json)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen.svg)](https://nodejs.org)
 [![Status](https://img.shields.io/badge/status-v0.1.0--alpha-orange)](#)
@@ -134,6 +134,20 @@ Assembles rich, token-efficient context from multiple sources:
 Three context strategies: `truncate` · `summarize` · `compact`
 
 `src/context/builder.ts` · `tests/context.test.ts`
+
+### 🖥 Playground (Interactive Session)
+
+A full terminal AI playground with slash commands, skills, and session management:
+
+- **Streaming UI** — live text rendering with token/cost/iteration tracking
+- **Slash Commands** — 21+ built-in commands (`/model`, `/sessions`, `/tools`, `/permissions`, etc.)
+- **Command History** — arrow key navigation, tab autocomplete
+- **Multiline Input** — prefix with `> ` for multi-line prompts
+- **Session Management** — create, switch, resume, and save conversations
+- **Skills System** — discover and load skills from disk
+- **No-Provider Mode** — graceful error messaging when no provider is configured
+
+`src/cli/playground/` · `tests/playground/`
 
 ### 🖥 Terminal UI
 
@@ -286,13 +300,29 @@ nexus --no-stream
 ### Slash Commands (inside session)
 
 ```
-/help       Show available commands
-/model      Check current model
-/tools      List available tools
+/help        Show available commands
+/model       Check or change model
+/models      List available models
+/provider    Check or change provider
+/providers   List configured providers
+/new         Start a new session
+/sessions    List all sessions
+/switch      Switch to another session
+/clear       Clear conversation
+/history     Show input history
+/save        Save current session
+/title       Set session title
+/tools       List available tools
 /permissions Show permission policies
-/clear      Clear conversation
-/exit       Exit NEXUS
+/context     View assembled context
+/project     Show project info
+/doctor      Run diagnostics
+/skills      List installed skills
+/cost        Show token/cost info
+/quit        Exit playground
 ```
+
+Use `> ` prefix to enter multiline input mode — send a blank line to submit.
 
 ---
 
@@ -330,14 +360,15 @@ NEXUS
  ├── Sessions         — src/sessions/         (persistent history)
  ├── TUI              — src/tui/              (terminal rendering)
  ├── Config           — src/config/           (global + project config)
- ├── Skills           — type: ToolKind='skill'   (type system — implementation pending)
+ ├── playground       — src/cli/playground/   (slash commands, input, renderer)
+├── skills           — src/skills/           (skill discovery and management)
  ├── MCP              — type: ToolKind='mcp'     (type system — implementation pending)
  ├── Plugins          — type: ToolKind='plugin'  (type system — implementation pending)
  └── Workflows        — type: Workflow         (type system — implementation pending)
 ```
 
-**Implemented today:** Providers, Harness, Tools, Permissions, Context, Sessions, TUI, Config.
-**Type system ready:** Skills, MCP, Plugins, Workflows, Agents.
+**Implemented today:** Providers, Harness, Tools, Permissions, Context, Sessions, TUI, Config, Playground, Skills.
+**Type system ready:** MCP, Plugins, Workflows, Agents.
 
 ---
 
@@ -509,7 +540,7 @@ nexus/
 │   ├── tui/                # Terminal UI renderer
 │   ├── types/              # Core type system
 │   └── utils/              # FS helpers & logger
-├── tests/                  # 40 tests across 8 suites
+├── tests/                  # 71 tests across 12 suites
 ├── dist/                   # Compiled output
 ├── package.json
 └── tsconfig.json
@@ -580,13 +611,13 @@ npm test
   ✔ should have tools with required fields
   ✔ should have at least 10 builtin tools
 
-ℹ tests 40
-ℹ suites 8
-ℹ pass 40
+ℹ tests 71
+ℹ suites 12
+ℹ pass 71
 ℹ fail 0
 ```
 
-All 40 tests pass consistently. Run with `npm test` or `npm run test:watch`.
+All 71 tests pass consistently. Run with `npm test` or `npm run test:watch`.
 
 ---
 
@@ -602,8 +633,8 @@ All 40 tests pass consistently. Run with `npm test` or `npm run test:watch`.
 | ✅ | Session persistence (CRUD) |
 | ✅ | TUI with streaming and cost tracking |
 | ✅ | Config manager (global + project) |
-| ✅ | 40 passing tests |
-| 🗺 | Skills system |
+| ✅ | 71 passing tests |
+| ✅ | Skills system (discovery, loading, command registry) |
 | 🗺 | MCP server integration |
 | 🗺 | Plugin system |
 | 🗺 | Workflow engine |
@@ -628,7 +659,7 @@ Contributions are welcome. Here's how to get started:
 
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feat/my-feature`
-3. Make your changes — ensure all 40 existing tests pass
+3. Make your changes — ensure all 71 existing tests pass
 4. Add tests for new functionality
 5. Run `npm run typecheck` to verify types
 6. Commit with a clear message
