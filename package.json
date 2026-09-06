@@ -59,7 +59,8 @@
     "openai": "4.68.0",
     "@anthropic-ai/sdk": "0.32.0",
     "node-fetch": "^3.3.2",
-    "formdata-node": "^6.0.3"
+    "formdata-node": "^6.0.3",
+    "agentkeepalive": "^4.5.0"
   },
   "devDependencies": {
     "typescript": "^6.0.3",
