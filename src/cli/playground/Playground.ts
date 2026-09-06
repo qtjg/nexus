@@ -244,7 +244,7 @@ Current provider: ${this.providerId}`;
     });
 
     this.input = input;
-    input.prompt();
+    input.setPrompt('▸ ');
   }
 
   private async processInput(input: string): Promise<void> {

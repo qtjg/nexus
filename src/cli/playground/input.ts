@@ -1,5 +1,6 @@
 // NEXUS — Input Controller
 // Handles multiline input, history, arrow keys, autocomplete
+// Uses a clean custom prompt approach (no readline echo duplication)
 import * as readline from 'readline';
 
 const ESC = '\x1b';
@@ -15,34 +16,44 @@ export class InputController {
   private onComplete: (line: string) => Promise<void>;
   private onExit: () => void;
   private autocompleteFn?: (input: string) => string[];
+  private partialLine = '';
+  private promptText = '';
 
   constructor(opts: {
     onComplete: (line: string) => Promise<void>;
     onExit: () => void;
     initialHistory?: string[];
   }) {
-    this.rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-      prompt: '',
-      terminal: true,
-    });
     this.history = opts.initialHistory ?? [];
     this.onComplete = opts.onComplete;
     this.onExit = opts.onExit;
+    this.rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+      terminal: false,
+    });
     this.setupHandlers();
   }
 
-  setAutocomplete(fn: (input: string) => string[]) {
-    this.autocompleteFn = fn;
+  setPrompt(text: string): void {
+    this.promptText = text;
+    this.writePrompt();
+  }
+
+  private writePrompt(): void {
+    process.stdout.write(`${ESC}[?25l${ESC}[36m${this.promptText}${ESC}[37m`);
+  }
+
+  private writeLine(text: string): void {
+    process.stdout.write(text);
   }
 
   prompt(): void {
-    this.rl.prompt();
+    this.writePrompt();
   }
 
   private setupHandlers(): void {
-    this.rl.on('line', async (line) => {
+    this.rl.on('line', (line) => {
       const rawLine = line;
 
       if (this.isMultiline) {
@@ -53,50 +64,48 @@ export class InputController {
           this.multilineBuffer = '';
           this.history.push(fullInput);
           this.historyIndex = this.history.length;
-          await this.onComplete(fullInput);
+          process.stdout.write(`${ESC}[?25h`);
+          process.stdout.write('\n');
+          this.onComplete(fullInput).catch(() => {});
+          this.prompt();
+          process.stdout.write(`${ESC}[?25l`);
         } else {
-          this.rl.prompt();
+          this.writeLine(rawLine + '\n');
+          this.writePrompt();
         }
         return;
       }
 
       const trimmed = rawLine.trim();
       if (!trimmed) {
-        this.rl.prompt();
-        return;
-      }
-
-      // Multiline trigger
-      if (trimmed.startsWith('> ') && trimmed.length > 2) {
-        this.isMultiline = true;
-        this.multilineBuffer = trimmed.slice(2) + '\n';
-        process.stdout.write(`${ESC}[36m  (multiline mode — send blank line to finish)${ESC}[0m\n`);
-        this.rl.prompt();
+        this.prompt();
         return;
       }
 
       this.history.push(trimmed);
       this.historyIndex = this.history.length;
-      await this.onComplete(trimmed);
+      process.stdout.write(`${ESC}[?25h`);
+      process.stdout.write('\n');
+      this.onComplete(trimmed).catch(() => {});
+      this.prompt();
+      process.stdout.write(`${ESC}[?25l`);
     });
 
-    // Handle arrow keys and special keys
     process.stdin.on('keypress', (ch: string, key: any) => {
       if (this.isMultiline) return;
 
+      // Handle arrow keys
       if (key?.name === 'up') {
         if (this.historyIndex > 0) {
           this.historyIndex--;
           this.currentLine = this.history[this.historyIndex];
-          this.clearCurrentLine();
-          process.stdout.write(this.currentLine);
+          this.rewriteCurrentLine();
         }
       } else if (key?.name === 'down') {
         if (this.historyIndex < this.history.length - 1) {
           this.historyIndex++;
           this.currentLine = this.history[this.historyIndex];
-          this.clearCurrentLine();
-          process.stdout.write(this.currentLine);
+          this.rewriteCurrentLine();
         } else {
           this.historyIndex = this.history.length;
           this.currentLine = '';
@@ -107,22 +116,46 @@ export class InputController {
           const suggestions = this.autocompleteFn(this.currentLine);
           if (suggestions.length === 1) {
             this.currentLine = suggestions[0];
-            this.clearCurrentLine();
-            process.stdout.write(this.currentLine);
+            this.rewriteCurrentLine();
           } else if (suggestions.length > 1) {
             const match = suggestions.filter((s) => s.startsWith(this.currentLine));
             if (match.length === 1) {
               this.currentLine = match[0];
-              this.clearCurrentLine();
-              process.stdout.write(this.currentLine);
+              this.rewriteCurrentLine();
             }
           }
         }
-      } else if (key?.name === 'c' && key.ctrl) {
+      } else if (key?.name === 'left') {
+        if (this.currentLine.length > 0) {
+          this.currentLine = this.currentLine.slice(0, -1);
+          this.rewriteCurrentLine();
+        }
+      } else if (key?.name === 'right') {
+        if (this.currentLine.length > 0) {
+          this.currentLine = this.currentLine.slice(0, -1);
+          this.rewriteCurrentLine();
+        }
+      } else if (key?.name === 'backspace') {
+        if (this.currentLine.length > 0) {
+          this.currentLine = this.currentLine.slice(0, -1);
+          this.rewriteCurrentLine();
+        }
+      } else if (key?.ctrl && key?.name === 'c') {
         process.stdout.write(`${ESC}[K${ESC}[?25l`);
         this.onExit();
+      } else if (ch && ch.length === 1 && !key?.ctrl && !key?.meta) {
+        // Regular printable character — echo it
+        this.currentLine += ch;
+        process.stdout.write(ch);
       }
     });
+  }
+
+  private rewriteCurrentLine(): void {
+    // Erase current line, rewrite with updated content + prompt
+    process.stdout.write(`${CSI}G${ESC}[K`);
+    process.stdout.write(this.currentLine);
+    process.stdout.write(`${ESC}[36m${this.promptText.slice(this.currentLine.length)}${ESC}[37m`);
   }
 
   private clearCurrentLine(): void {
@@ -130,6 +163,11 @@ export class InputController {
   }
 
   close(): void {
+    this.showCursor();
     this.rl.close();
+  }
+
+  showCursor(): void {
+    process.stdout.write(`${ESC}[?25h`);
   }
 }
