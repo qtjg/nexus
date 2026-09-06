@@ -2,33 +2,47 @@
 
 <div align="center">
 
-**The universal AI development layer for your terminal.**
-
-A model-independent, provider-agnostic AI runtime — unified agent harness, tool system, permissions, and context management in one CLI.
-
 ```
-git clone https://github.com/qtjg/nexus.git && cd nexus && npm install && npm run build && npm link
+  ╔════════════════════════════════════════════════════════════════╗
+  ║                                                                ║
+  ║     ██████╗ ██╗   ██╗███████╗████████╗    ███████╗███████╗     ║
+  ║    ██╔════╝ ██║   ██║██╔════╝╚══██╔══╝    ██╔════╝██╔════╝     ║
+  ║    ██║  ███╗██║   ██║███████╗   ██║       ███████╗█████╗       ║
+  ║    ██║   ██║██║   ██║╚════██║   ██║       ╚════██║██╔══╝       ║
+  ║    ╚██████╔╝╚██████╔╝███████║   ██║       ███████║██║          ║
+  ║     ╚═════╝  ╚═════╝ ╚══════╝   ╚═╝       ╚══════╝╚═╝          ║
+  ║                                                                ║
+  ║       The universal AI development layer for your terminal     ║
+  ║                                                                ║
+  ║    ◈  71 passing tests  ◈  TypeScript 5.7+  ◈  Node ≥ 20       ║
+  ║                                                                ║
+  ╚════════════════════════════════════════════════════════════════╝
 ```
 
-[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-71%2F71-passing-green)](tests)
-[![TypeScript](https://img.shields.io/badge/typescript-5.7+-blue.svg)](tsconfig.json)
-[![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen.svg)](https://nodejs.org)
-[![Status](https://img.shields.io/badge/status-v0.1.0--alpha-orange)](#)
+`git clone https://github.com/qtjg/nexus.git && cd nexus && npm install && npm run build && npm link`
 
-</div>
+| [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) | [![Tests](https://img.shields.io/badge/tests-71%2F71-passing-green)](tests) | [![TypeScript](https://img.shields.io/badge/typescript-5.7+-blue.svg)](tsconfig.json) | [![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen.svg)](https://nodejs.org) | [![Status](https://img.shields.io/badge/status-v0.1.0--alpha-orange)](#) |
+|---|---|---|---|---|
 
----
-
-<div align="center">
-  <img src="docs/assets/nexus-core.svg" alt="NEXUS Core Architecture" width="800" />
 </div>
 
 ---
 
 ## What is NEXUS?
 
-Developers currently juggle multiple tools to accomplish what NEXUS does in one process: a provider client, an agent loop, a tool executor, a permission gate, a context assembler, and a session store. NEXUS unifies all of these into a single, type-safe runtime.
+```
+  ┌─────────────────────────────────────────────────────────────────┐
+  │                                                                 │
+  │   Developers currently juggle MULTIPLE tools to accomplish      │
+  │   what NEXUS does in ONE process:                               │
+  │                                                                 │
+  │   [Provider Client] + [Agent Loop] + [Tool Executor] +         │
+  │   [Permission Gate] + [Context Builder] + [Session Store]       │
+  │                                                                 │
+  │   = NEXUS (one CLI, one runtime, one contract)                  │
+  │                                                                 │
+  └─────────────────────────────────────────────────────────────────┘
+```
 
 The model is replaceable. The environment, harness, tools, permissions, and developer experience are the product.
 
@@ -48,7 +62,32 @@ The model is replaceable. The environment, harness, tools, permissions, and deve
 ## Core Features
 
 <div align="center">
-  <img src="docs/assets/architecture.svg" alt="NEXUS Architecture Flow" width="800" />
+
+```
+  ┌──────────────────────────────────────────────────────────────────┐
+  │                                                                  │
+  │      ┌─────────┐    ┌─────────┐    ┌─────────┐                  │
+  │      │  CLI    │───▶│ HARNESS │───▶│ PROVIDER│                  │
+  │      │  Layer  │    │  Engine │    │  Abstraction│               │
+  │      └─────────┘    └────┬────┘    └─────────┘                  │
+  │                          │                                      │
+  │           ┌──────────────┼──────────────┐                      │
+  │           ▼              ▼              ▼                        │
+  │     ┌───────────┐  ┌───────────┐  ┌───────────┐                │
+  │     │  TOOLS    │  │ PERMISSION│  │  SESSION  │                │
+  │     │  Engine   │  │  Engine   │  │   Store   │                │
+  │     └───────────┘  └───────────┘  └───────────┘                │
+  │           ▲              │              ▲                        │
+  │           └──────┬───────┘              │                       │
+  │                  ▼                       ▼                        │
+  │           ┌─────────────────────────────────────┐               │
+  │           │        CONTEXT BUILDER             │               │
+  │           │   (project · git · history · tools)│               │
+  │           └─────────────────────────────────────┘               │
+  │                                                                  │
+  └──────────────────────────────────────────────────────────────────┘
+```
+
 </div>
 
 ### 🧠 Provider Abstraction
@@ -114,7 +153,7 @@ Granular, auditable permission system with four modes:
 Persistent session storage with full lifecycle:
 
 ```
-save() → load() → list() → appendMessage() → updateSession() → delete()
+  save() ──▶ load() ──▶ list() ──▶ appendMessage() ──▶ updateSession() ──▶ delete()
 ```
 
 Sessions are stored as JSON in `.forge/sessions/` (project) or `~/.nexus/sessions/` (global).
@@ -138,6 +177,25 @@ Three context strategies: `truncate` · `summarize` · `compact`
 ### 🖥 Playground (Interactive Session)
 
 A full terminal AI playground with slash commands, skills, and session management:
+
+```
+  ╭──────────────────────────────────────────────────────────────────╮
+  │  NEXUS Playground                          claude/sonnet-4     │
+  ├──────────────────────────────────────────────────────────────────┤
+  │                                                                  │
+  │  You: Write a function to sort an array                          │
+  │                                                                  │
+  │  Assistant: I'll write a merge sort implementation...            │
+  │    [read_file] src/utils/sort.ts ✓                                │
+  │    [write_file] src/utils/sort.ts ✓                               │
+  │                                                                  │
+  │    Here's the implementation with O(n log n) complexity...       │
+  │                                                                  │
+  ├──────────────────────────────────────────────────────────────────┤
+  │  ▸ model: claude/sonnet-4-20250514   ▸ mode: normal   ▸ mode   │
+  │  Tokens: 1,247  │  Cost: $0.0001  │  Iterations: 3              │
+  ╰──────────────────────────────────────────────────────────────────╯
+```
 
 - **Streaming UI** — live text rendering with token/cost/iteration tracking
 - **Slash Commands** — 21+ built-in commands (`/model`, `/sessions`, `/tools`, `/permissions`, etc.)
@@ -177,24 +235,24 @@ Type-safe config manager with deep-copy isolation (no shared-state mutations):
 ## The NEXUS Stack
 
 <div align="center">
-  <img src="docs/assets/stack.svg" alt="NEXUS Stack Diagram" width="700" />
-</div>
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│  NEXUS CLI                                             │  commander · tui · streaming
-├─────────────────────────────────────────────────────────┤
-│  Config · Sessions · Paths · Utils                      │  persistent state layer
-├─────────────────────────────────────────────────────────┤
-│  Agent Harness  ·  Context Builder  ·  Permission Engine │  orchestration layer
-├─────────────────────────────────────────────────────────┤
-│  Providers  (OpenRouter · Anthropic · OpenAI · Ollama…)  │  model abstraction
-├─────────────────────────────────────────────────────────┤
-│  Tools  (filesystem · terminal · git · 11 built-in)     │  execution layer
-├─────────────────────────────────────────────────────────┤
-│  Skills · MCP · Plugins · Workflows · Agents            │  extensibility (type system)
-└─────────────────────────────────────────────────────────┘
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  NEXUS CLI                commander · tui · streaming           ║
+  ╠══════════════════════════════════════════════════════════════════╣
+  ║  Config · Sessions · Paths · Utils            persistent state  ║
+  ╠══════════════════════════════════════════════════════════════════╣
+  ║  Agent Harness · Context Builder · Permission Engine  orchestrate ║
+  ╠══════════════════════════════════════════════════════════════════╣
+  ║  Providers  (OpenRouter · Anthropic · OpenAI · Ollama…) model    ║
+  ╠══════════════════════════════════════════════════════════════════╣
+  ║  Tools  (filesystem · terminal · git · 11 built-in) execution   ║
+  ╠══════════════════════════════════════════════════════════════════╣
+  ║  Skills · Playground · MCP · Plugins · Workflows · Agents       ║
+  ╚══════════════════════════════════════════════════════════════════╝
 ```
+
+</div>
 
 ---
 
@@ -227,15 +285,21 @@ nexus
 ## First Run
 
 ```
-╭────────────────────────────────────────────────────────╮
-│  NEXUS                        claude/sonnet-4-20250514 │
-├────────────────────────────────────────────────────────┤
-│                                                        │
-│  > Type your request...                               │
-│                                                        │
-├────────────────────────────────────────────────────────┤
-│  Tokens: 0            Cost: $0.000     Iterations: 0  │
-╰────────────────────────────────────────────────────────╯
+  ╭────────────────────────────────────────────────────────────╮
+  │                                                            │
+  │    ┌──────────────────────────────────────────────────┐    │
+  │    │                                                  │    │
+  │    │   NEXUS          claude/sonnet-4-20250514        │    │
+  │    │                                                  │    │
+  │    │  > Type your request and press Enter...          │    │
+  │    │                                                  │    │
+  │    │                                                  │    │
+  │    └──────────────────────────────────────────────────┘    │
+  │                                                            │
+  │    ▸ model: claude/sonnet-4-20250514  ▸ provider: openrouter │
+  │    ▸ tokens: 0  │  cost: $0.0000  │  iterations: 0          │
+  │                                                            │
+  ╰────────────────────────────────────────────────────────────╯
 ```
 
 > *Illustrative terminal output — actual TUI may vary.*
@@ -245,14 +309,14 @@ nexus
 ## CLI Reference
 
 ```
-nexus                  Start interactive session
-nexus init             Initialize NEXUS in current directory
-nexus providers        List all configured providers
-nexus provider <id>    Add or inspect a provider
-nexus models           List all configured models
-nexus model <id>       Set the active model
-nexus doctor           Health check for providers and config
-nexus help             Show help
+  nexus                    Start interactive session
+  nexus init               Initialize NEXUS in current directory
+  nexus providers          List all configured providers
+  nexus provider <id>      Add or inspect a provider
+  nexus models             List all configured models
+  nexus model <id>         Set the active model
+  nexus doctor             Health check for providers and config
+  nexus help               Show help
 ```
 
 ### Provider Commands
@@ -300,26 +364,34 @@ nexus --no-stream
 ### Slash Commands (inside session)
 
 ```
-/help        Show available commands
-/model       Check or change model
-/models      List available models
-/provider    Check or change provider
-/providers   List configured providers
-/new         Start a new session
-/sessions    List all sessions
-/switch      Switch to another session
-/clear       Clear conversation
-/history     Show input history
-/save        Save current session
-/title       Set session title
-/tools       List available tools
-/permissions Show permission policies
-/context     View assembled context
-/project     Show project info
-/doctor      Run diagnostics
-/skills      List installed skills
-/cost        Show token/cost info
-/quit        Exit playground
+  ╔══════════════════════════════════════════════════════════════╗
+  ║  Session Management                                          ║
+  ╠══════════════════════════════════════════════════════════════╣
+  ║  /new          Start a new session                           ║
+  ║  /sessions     List all sessions                             ║
+  ║  /switch       Switch to another session                     ║
+  ║  /save         Save current session                          ║
+  ║  /history      Show input history                             ║
+  ║  /clear        Clear conversation                             ║
+  ║  /title        Set session title                              ║
+  ║  /quit         Exit playground                                ║
+  ║                                                              ║
+  ║  Model & Provider                                            ║
+  ║  /model        Check or change model                          ║
+  ║  /models       List available models                          ║
+  ║  /provider     Check or change provider                        ║
+  ║  /providers    List configured providers                       ║
+  ║                                                              ║
+  ║  Info & Diagnostics                                          ║
+  ║  /help         Show available commands                        ║
+  ║  /tools        List available tools                           ║
+  ║  /permissions  Show permission policies                        ║
+  ║  /context      View assembled context                          ║
+  ║  /project      Show project info                              ║
+  ║  /doctor       Run diagnostics                                ║
+  ║  /skills       List installed skills                           ║
+  ║  /cost         Show token/cost info                            ║
+  ╚══════════════════════════════════════════════════════════════╝
 ```
 
 Use `> ` prefix to enter multiline input mode — send a blank line to submit.
@@ -350,21 +422,21 @@ Write tooling that works with any provider. The `Provider` interface is the cont
 NEXUS is designed to be extended. The type system defines the contracts; implementations grow on top.
 
 ```
-NEXUS
- ├── Providers        — src/providers/        (OpenRouter, Anthropic, OpenAI, Local)
- ├── Models           — type: Model           (cloud · local · gateway)
- ├── Harness          — src/harness/          (agent loops, tool resolution)
- ├── Tools            — src/tools/            (11 built-in, extensible via ToolDefinition)
- ├── Permissions      — src/permissions/      (engine + file-based store)
- ├── Context          — src/context/          (project assembly, truncation strategies)
- ├── Sessions         — src/sessions/         (persistent history)
- ├── TUI              — src/tui/              (terminal rendering)
- ├── Config           — src/config/           (global + project config)
- ├── playground       — src/cli/playground/   (slash commands, input, renderer)
-├── skills           — src/skills/           (skill discovery and management)
- ├── MCP              — type: ToolKind='mcp'     (type system — implementation pending)
- ├── Plugins          — type: ToolKind='plugin'  (type system — implementation pending)
- └── Workflows        — type: Workflow         (type system — implementation pending)
+  NEXUS
+   ├── Providers        — src/providers/        (OpenRouter, Anthropic, OpenAI, Local)
+   ├── Models           — type: Model           (cloud · local · gateway)
+   ├── Harness          — src/harness/          (agent loops, tool resolution)
+   ├── Tools            — src/tools/            (11 built-in, extensible via ToolDefinition)
+   ├── Permissions      — src/permissions/      (engine + file-based store)
+   ├── Context          — src/context/          (project assembly, truncation strategies)
+   ├── Sessions         — src/sessions/         (persistent history)
+   ├── TUI              — src/tui/              (terminal rendering)
+   ├── Config           — src/config/           (global + project config)
+   ├── Playground       — src/cli/playground/   (slash commands, input, renderer)
+   ├── Skills           — src/skills/           (skill discovery and management)
+   ├── MCP              — type: ToolKind='mcp'  (type system — implementation pending)
+   ├── Plugins          — type: ToolKind='plugin' (type system — implementation pending)
+   └── Workflows        — type: Workflow        (type system — implementation pending)
 ```
 
 **Implemented today:** Providers, Harness, Tools, Permissions, Context, Sessions, TUI, Config, Playground, Skills.
@@ -526,24 +598,39 @@ npm install -g nexus
 ### Project Structure
 
 ```
-nexus/
-├── bin/nexus.js            # CLI entry point
-├── src/
-│   ├── cli/index.ts        # Commander.js command definitions
-│   ├── config/             # Config manager & path resolution
-│   ├── context/            # Context assembly & truncation
-│   ├── harness/            # Agent loop orchestration
-│   ├── permissions/        # Permission engine & file store
-│   ├── providers/          # Provider implementations
-│   ├── sessions/           # Session persistence
-│   ├── tools/              # Tool definitions & executor
-│   ├── tui/                # Terminal UI renderer
-│   ├── types/              # Core type system
-│   └── utils/              # FS helpers & logger
-├── tests/                  # 71 tests across 12 suites
-├── dist/                   # Compiled output
-├── package.json
-└── tsconfig.json
+  nexus/
+  ├── bin/nexus.js            # CLI entry point
+  ├── src/
+  │   ├── cli/
+  │   │   ├── index.ts        # Commander.js command definitions
+  │   │   └── playground/     # Interactive session system
+  │   │       ├── Playground.ts  # Main orchestrator
+  │   │       ├── commands.ts    # 21+ slash commands
+  │   │       ├── registry.ts    # Command registry
+  │   │       ├── parser.ts      # Slash command parsing
+  │   │       ├── input.ts       # readline + arrow keys
+  │   │       ├── renderer.ts    # ANSI frame rendering
+  │   │       ├── types.ts       # Core types
+  │   │       └── welcome.ts     # ASCII banner
+  │   ├── skills/             # Skills discovery system
+  │   │   ├── SkillManager.ts
+  │   │   └── index.ts
+  │   ├── config/             # Config manager & path resolution
+  │   ├── context/            # Context assembly & truncation
+  │   ├── harness/            # Agent loop orchestration
+  │   ├── permissions/        # Permission engine & file store
+  │   ├── providers/          # Provider implementations
+  │   ├── sessions/           # Session persistence
+  │   ├── tools/              # Tool definitions & executor
+  │   ├── tui/                # Terminal UI renderer
+  │   ├── types/              # Core type system
+  │   └── utils/              # FS helpers & logger
+  ├── tests/                  # 71 tests across 12 suites
+  │   ├── playground/         # New: parser, registry, skills
+  │   └── ...                 # Existing test suites
+  ├── dist/                   # Compiled output
+  ├── package.json
+  └── tsconfig.json
 ```
 
 ---
@@ -551,70 +638,27 @@ nexus/
 ## Testing
 
 ```
-npm test
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  npm test                                                        ║
+  ╠══════════════════════════════════════════════════════════════════╣
+  ║  ▶ CLI Dispatch (Regression)                                     ║
+  ║    ✔ should NOT silently exit when run with no args              ║
+  ║    ✔ should show provider error for nexus chat alias             ║
+  ║    ✔ should show provider error for nexus run alias              ║
+  ║    ✔ should show help for nexus --help                           ║
+  ║    ✔ should list providers command output                        ║
+  ║    ✔ should suggest how to add a provider                        ║
+  ╠══════════════════════════════════════════════════════════════════╣
+  ║  ▶ ConfigManager    ▶ ContextBuilder     ▶ AgentHarness          ║
+  ║  ▶ PermissionEngine ▶ SessionStore     ▶ Tool Executor           ║
+  ║  ▶ Provider Types  ▶ Tool Types                              ║
+  ║  ▶ SlashCommand Parser  ▶ SlashCommandRegistry  ▶ SkillManager    ║
+  ╚══════════════════════════════════════════════════════════════════╝
 
-▶ ConfigManager
-  ✔ should create default config
-  ✔ should add and retrieve providers
-  ✔ should list all providers
-  ✔ should add and retrieve models
-  ✔ should set and get default model
-  ✔ should persist config to disk
-  ✔ should remove providers
-  ✔ should set permission mode
-
-▶ ContextBuilder
-  ✔ should build context with project files
-  ✔ should handle missing project info
-  ✔ should apply truncation strategy
-
-▶ AgentHarness
-  ✔ should create harness with defaults
-  ✔ should have a working getState
-  ✔ should reset session state
-  ✔ should cancel running operation
-
-▶ PermissionEngine
-  ✔ should default to safe mode
-  ✔ should allow once decision
-  ✔ should deny always decision
-  ✔ should remember session decisions
-  ✔ should switch modes
-  ✔ should list all policies
-  ✔ should infer correct categories
-  ✔ should persist to file store
-  ✔ should handle unknown tool names
-  ✔ should clear session decisions
-
-▶ SessionStore
-  ✔ should save and load a session
-  ✔ should list sessions
-  ✔ should append messages
-  ✔ should update session
-  ✔ should delete a session
-  ✔ should handle missing session gracefully
-  ✔ should return empty list for non-existent dir
-
-▶ Tool Executor
-  ✔ should execute read_file tool
-  ✔ should list directory contents
-  ✔ should have all builtin tools with required fields
-  ✔ should have at least 10 builtin tools
-  ✔ should handle missing file gracefully
-
-▶ Provider Types
-  ✔ should have valid Provider interface shape
-  ✔ should define ChatResponse shape
-
-▶ Tool Types
-  ✔ should export BUILTIN_TOOLS
-  ✔ should have tools with required fields
-  ✔ should have at least 10 builtin tools
-
-ℹ tests 71
-ℹ suites 12
-ℹ pass 71
-ℹ fail 0
+  ℹ tests 71
+  ℹ suites 12
+  ℹ pass 71
+  ℹ fail 0
 ```
 
 All 71 tests pass consistently. Run with `npm test` or `npm run test:watch`.
@@ -633,8 +677,9 @@ All 71 tests pass consistently. Run with `npm test` or `npm run test:watch`.
 | ✅ | Session persistence (CRUD) |
 | ✅ | TUI with streaming and cost tracking |
 | ✅ | Config manager (global + project) |
-| ✅ | 71 passing tests |
+| ✅ | Interactive playground with slash commands |
 | ✅ | Skills system (discovery, loading, command registry) |
+| ✅ | 71 passing tests |
 | 🗺 | MCP server integration |
 | 🗺 | Plugin system |
 | 🗺 | Workflow engine |
@@ -647,9 +692,22 @@ All 71 tests pass consistently. Run with `npm test` or `npm run test:watch`.
 
 ## Project Status
 
-**NEXUS v0.1.0 — Early development**
-
-A working, tested foundation for a universal AI development platform. The core runtime — providers, harness, tools, permissions, context, and sessions — is implemented and tested. The extensibility layer (skills, MCP, plugins, workflows) has type definitions ready and is awaiting implementation.
+```
+  ┌──────────────────────────────────────────────────────────────────┐
+  │                                                                  │
+  │   NEXUS v0.1.0 — Early development                               │
+  │                                                                  │
+  │   A working, tested foundation for a universal AI development   │
+  │   platform. The core runtime — providers, harness, tools,        │
+  │   permissions, context, sessions, playground, and skills —        │
+  │   is implemented and tested.                                     │
+  │                                                                  │
+  │   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━    │
+  │                                                                  │
+  │   71 tests · 12 suites · 18 files added · TypeScript strict     │
+  │                                                                  │
+  └──────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -682,9 +740,13 @@ Contributions are welcome. Here's how to get started:
 <div align="center">
 
 ```
-Build with every model.
-Route through every capability.
-Operate from one terminal.
+  ┌────────────────────────────────────────────────────────┐
+  │                                                        │
+  │    Build with every model.                             │
+  │    Route through every capability.                     │
+  │    Operate from one terminal.                          │
+  │                                                        │
+  └────────────────────────────────────────────────────────┘
 ```
 
 `github.com/qtjg/nexus` · `npmjs.com/package/nexus` · `v0.1.0`
