@@ -1,6 +1,5 @@
 // NEXUS — Input Controller
 // Handles multiline input, history, arrow keys, autocomplete
-// Uses a clean custom prompt approach (no readline echo duplication)
 import * as readline from 'readline';
 
 const ESC = '\x1b';
@@ -16,7 +15,6 @@ export class InputController {
   private onComplete: (line: string) => Promise<void>;
   private onExit: () => void;
   private autocompleteFn?: (input: string) => string[];
-  private partialLine = '';
   private promptText = '';
 
   constructor(opts: {
@@ -44,10 +42,6 @@ export class InputController {
     process.stdout.write(`${ESC}[?25l${ESC}[36m${this.promptText}${ESC}[37m`);
   }
 
-  private writeLine(text: string): void {
-    process.stdout.write(text);
-  }
-
   prompt(): void {
     this.writePrompt();
   }
@@ -64,13 +58,11 @@ export class InputController {
           this.multilineBuffer = '';
           this.history.push(fullInput);
           this.historyIndex = this.history.length;
-          process.stdout.write(`${ESC}[?25h`);
-          process.stdout.write('\n');
+          process.stdout.write(`${ESC}[?25h\n`);
           this.onComplete(fullInput).catch(() => {});
           this.prompt();
           process.stdout.write(`${ESC}[?25l`);
         } else {
-          this.writeLine(rawLine + '\n');
           this.writePrompt();
         }
         return;
@@ -84,8 +76,7 @@ export class InputController {
 
       this.history.push(trimmed);
       this.historyIndex = this.history.length;
-      process.stdout.write(`${ESC}[?25h`);
-      process.stdout.write('\n');
+      process.stdout.write(`${ESC}[?25h\n`);
       this.onComplete(trimmed).catch(() => {});
       this.prompt();
       process.stdout.write(`${ESC}[?25l`);
@@ -94,7 +85,6 @@ export class InputController {
     process.stdin.on('keypress', (ch: string, key: any) => {
       if (this.isMultiline) return;
 
-      // Handle arrow keys
       if (key?.name === 'up') {
         if (this.historyIndex > 0) {
           this.historyIndex--;
@@ -125,37 +115,22 @@ export class InputController {
             }
           }
         }
-      } else if (key?.name === 'left') {
-        if (this.currentLine.length > 0) {
-          this.currentLine = this.currentLine.slice(0, -1);
-          this.rewriteCurrentLine();
-        }
-      } else if (key?.name === 'right') {
-        if (this.currentLine.length > 0) {
-          this.currentLine = this.currentLine.slice(0, -1);
-          this.rewriteCurrentLine();
-        }
       } else if (key?.name === 'backspace') {
-        if (this.currentLine.length > 0) {
-          this.currentLine = this.currentLine.slice(0, -1);
-          this.rewriteCurrentLine();
-        }
+        // Do nothing — readline handles it
       } else if (key?.ctrl && key?.name === 'c') {
-        process.stdout.write(`${ESC}[K${ESC}[?25l`);
+        process.stdout.write(`${ESC}[K${ESC}[?25h`);
         this.onExit();
-      } else if (ch && ch.length === 1 && !key?.ctrl && !key?.meta) {
-        // Regular printable character — echo it
-        this.currentLine += ch;
-        process.stdout.write(ch);
       }
+      // Don't echo individual characters — readline handles all input
     });
   }
 
   private rewriteCurrentLine(): void {
-    // Erase current line, rewrite with updated content + prompt
+    // Erase current line from cursor, rewrite
     process.stdout.write(`${CSI}G${ESC}[K`);
     process.stdout.write(this.currentLine);
-    process.stdout.write(`${ESC}[36m${this.promptText.slice(this.currentLine.length)}${ESC}[37m`);
+    // Show cursor and prompt indicator
+    process.stdout.write(`${ESC}[36m${this.promptText}${ESC}[37m`);
   }
 
   private clearCurrentLine(): void {
