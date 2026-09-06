@@ -2,8 +2,7 @@
 // Direct integration with OpenAI API
 
 import OpenAI from 'openai';
-import type { ChatCompletion, ChatCompletionChunk, ChatCompletionMessageToolCall, ChatCompletionTool, CompletionUsage } from 'openai';
-import type { ChatCompletionMessageParam } from 'openai/resources/chat/completions';
+import type { ChatCompletion, ChatCompletionChunk, ChatCompletionMessageParam, ChatCompletionMessageToolCall, ChatCompletionTool, CompletionUsage } from 'openai';
 import type {
   Message,
   StreamChunk,
@@ -28,7 +27,7 @@ export class OpenAIProvider extends BaseProvider {
     const openaiMessages = this.convertMessages(messages);
     const response = await this.client.chat.completions.create({
       model: options.model,
-      messages: openaiMessages,
+      messages: openaiMessages as any,
       temperature: options.temperature,
       max_tokens: options.maxTokens,
       stream: false,
@@ -62,7 +61,7 @@ export class OpenAIProvider extends BaseProvider {
     const openaiMessages = this.convertMessages(messages);
     const stream = await this.client.chat.completions.create({
       model: options.model,
-      messages: openaiMessages,
+      messages: openaiMessages as any,
       temperature: options.temperature,
       max_tokens: options.maxTokens,
       stream: true,

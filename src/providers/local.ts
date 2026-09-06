@@ -2,8 +2,7 @@
 // Supports Ollama, LM Studio, and any OpenAI-compatible endpoint
 
 import OpenAI from 'openai';
-import type { ChatCompletion, ChatCompletionChunk, ChatCompletionMessageToolCall, ChatCompletionTool, CompletionUsage, Model as OpenAIModel } from 'openai';
-import type { ChatCompletionMessageParam } from 'openai/resources/chat/completions';
+import type { ChatCompletion, ChatCompletionChunk, ChatCompletionMessageParam, ChatCompletionMessageToolCall, ChatCompletionTool, CompletionUsage, Model as OpenAIModel } from 'openai';
 import type {
   Message,
   StreamChunk,
@@ -38,7 +37,7 @@ export class LocalProvider extends BaseProvider {
     const openaiMessages = this.convertMessages(messages);
     const response = await this.client.chat.completions.create({
       model,
-      messages: openaiMessages,
+      messages: openaiMessages as any,
       temperature: options.temperature,
       max_tokens: options.maxTokens,
       stream: false,
@@ -73,7 +72,7 @@ export class LocalProvider extends BaseProvider {
     const openaiMessages = this.convertMessages(messages);
     const stream = await this.client.chat.completions.create({
       model,
-      messages: openaiMessages,
+      messages: openaiMessages as any,
       temperature: options.temperature,
       max_tokens: options.maxTokens,
       stream: true,
