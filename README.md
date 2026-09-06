@@ -435,6 +435,19 @@ export NEXUS_DIR=~/.nexus    # Override default config directory
 
 ## Development
 
+First, configure a user-local npm prefix so `npm link` works without root:
+
+```bash
+# One-time setup (run once in your terminal)
+mkdir -p ~/.local/npm/bin
+echo "prefix=$HOME/.local/npm" > ~/.npmrc
+echo 'export PATH="$HOME/.local/npm/bin:$PATH"' >> ~/.bashrc
+echo 'export PATH="$HOME/.local/npm/bin:$PATH"' >> ~/.bash_profile
+source ~/.bashrc
+```
+
+Then:
+
 ```bash
 # Clone and install
 git clone https://github.com/qtjg/nexus.git
@@ -460,6 +473,15 @@ npm run typecheck
 npm run dev
 ```
 
+Verify the link:
+
+```bash
+which nexus      # → /home/username/.local/npm/bin/nexus
+nexus --version  # → 0.1.0
+```
+
+To remove the link: `npm unlink -g nexus` (run from inside the project directory).
+
 ## Installing from Published Package
 
 Once published to npm:
@@ -468,13 +490,7 @@ Once published to npm:
 npm install -g nexus
 ```
 
-> **Note:** If your system has a root-owned global npm prefix (e.g. `/usr/lib/node_modules` on Arch Linux), configure a user-local prefix instead:
->
-> ```bash
-> npm config set prefix '~/.local/npm'
-> export PATH="$HOME/.local/npm/bin:$PATH"
-> npm install -g nexus
-> ```
+> **Note:** On Arch Linux and other systems where the system npm prefix is root-owned (`/usr`), the user-local prefix setup above is required for both `npm install -g` and `npm link` to work.
 
 ### Project Structure
 
