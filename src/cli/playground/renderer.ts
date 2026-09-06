@@ -1,6 +1,5 @@
 // NEXUS — Renderer
 // Streaming output renderer with ANSI escapes, tool display, scrollback
-import * as readline from 'readline';
 import type { RenderState, ToolRenderInfo } from './types.js';
 
 const ESC = '\x1b';
@@ -13,12 +12,10 @@ export class Renderer {
   private isRunning = false;
   private responseBuffer = '';
   private renderState: RenderState;
-  private rl: readline.Interface;
   private onStatusChange?: (status: RenderState) => void;
 
   constructor(opts?: { onStatusChange?: (status: RenderState) => void }) {
     this.renderState = this.createInitialState();
-    this.rl = readline.createInterface({ input: process.stdin, output: process.stdout });
     this.onStatusChange = opts?.onStatusChange;
   }
 
@@ -84,7 +81,6 @@ export class Renderer {
     const state = this.renderState;
 
     // Header — Hermes-style
-    const elapsed = Math.floor((Date.now() - Date.now()) / 1000);
     const modelTag = state.model.includes('/') ? state.model.split('/')[1] || state.model : state.model;
     lines.push(`${ESC}[36m╔═══ NEXUS Playground ${modelTag.padEnd(47)}╗${ESC}[0m`);
     lines.push(`${ESC}[36m║${ESC}[37m  Provider: ${state.provider.padEnd(40)}${ESC}[36m║${ESC}[0m`);
