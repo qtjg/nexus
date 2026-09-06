@@ -56,8 +56,9 @@
   "dependencies": {
     "chalk": "^5.3.0",
     "commander": "^4.1.1",
-    "openai": "^4.28.0",
-    "@anthropic-ai/sdk": "^0.32.0"
+    "openai": "4.68.0",
+    "@anthropic-ai/sdk": "0.32.0",
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "typescript": "^6.0.3",
