@@ -3,20 +3,18 @@
 <div align="center">
 
 ```
-  ╔════════════════════════════════════════════════════════════════╗
-  ║                                                                ║
-  ║     ██████╗ ██╗   ██╗███████╗████████╗    ███████╗███████╗     ║
-  ║    ██╔════╝ ██║   ██║██╔════╝╚══██╔══╝    ██╔════╝██╔════╝     ║
-  ║    ██║  ███╗██║   ██║███████╗   ██║       ███████╗█████╗       ║
-  ║    ██║   ██║██║   ██║╚════██║   ██║       ╚════██║██╔══╝       ║
-  ║    ╚██████╔╝╚██████╔╝███████║   ██║       ███████║██║          ║
-  ║     ╚═════╝  ╚═════╝ ╚══════╝   ╚═╝       ╚══════╝╚═╝          ║
-  ║                                                                ║
-  ║       The universal AI development layer for your terminal     ║
-  ║                                                                ║
-  ║    ◈  71 passing tests  ◈  TypeScript 5.7+  ◈  Node ≥ 20       ║
-  ║                                                                ║
-  ╚════════════════════════════════════════════════════════════════╝
+        ▄▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▄
+       █                               █
+       █   ▄▄▄  ▄▀▀▄  █▀▀  ▄▄▄  ▄▀▀▀█  █
+       █  █   █ █▀▀█  █▀▀  █   █ █▀▀▀  █
+       █  █▄▄▄▀ █▀▀▀  █    █▄▄▄█ █     █
+       █        ▄▀  ▀▄                              ╔════╗
+       █   ▄▀▀▀▀▀▀▀▀▀▀▀▄  ╔══════════════════════╗  ║ 3D ║
+       █  ▄▀    N  E  X  ▀▄ ║  The Universal AI  ║  ║DEV ║
+       █  █    U  S       █  ║  Development Layer ║  ╚════╝
+       █   ▀▄____________▄▀  ║  v0.1.0 — Alpha   ║
+       █        ▀▄▄▄▄▄▄▄▄▀       ╚══════════════════════╝
+        ▀                  ▀
 ```
 
 `git clone https://github.com/qtjg/nexus.git && cd nexus && npm install && npm run build && npm link`
@@ -28,25 +26,53 @@
 
 ---
 
+<div align="center">
+
+### ⬡ The Universal AI Development Layer
+
+**Build with every model. Route through every capability. Operate from one terminal.**
+
+</div>
+
+---
+
 ## What is NEXUS?
 
+<div align="center">
+
 ```
-  ┌─────────────────────────────────────────────────────────────────┐
-  │                                                                 │
-  │   Developers currently juggle MULTIPLE tools to accomplish      │
-  │   what NEXUS does in ONE process:                               │
-  │                                                                 │
-  │   [Provider Client] + [Agent Loop] + [Tool Executor] +         │
-  │   [Permission Gate] + [Context Builder] + [Session Store]       │
-  │                                                                 │
-  │   = NEXUS (one CLI, one runtime, one contract)                  │
-  │                                                                 │
-  └─────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                             │
+│   Current state:                                                          │
+│   ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │
+│   │Provider  │ │ Agent    │ │  Tool    │ │ Permis-  │ │ Session  │       │
+│   │  SDK     │ │   Loop   │ │ Executor │ │   sions  │ │   Store  │       │
+│   └────┬─────┘ └────┬─────┘ └────┬─────┘ └────┬─────┘ └────┬─────┘       │
+│        │            │            │            │            │              │
+│        └────────────┴────────────┴────────────┴────────────┘              │
+│                            │                                              │
+│                            ▼                                              │
+│              ╔═══════════════════════════════════╗                        │
+│              ║       ✦  NEXUS  ✦                ║                        │
+│              ║    Unified AI Runtime            ║                        │
+│              ╚═══════════════════════════════════╝                        │
+│                            │                                              │
+│        ┌───────────────────┼───────────────────┐                          │
+│        │                   │                   │                          │
+│        ▼                   ▼                   ▼                          │
+│   ┌──────────┐      ┌──────────┐      ┌──────────┐                       │
+│   │  CLI     │      │ Playground│      │  Scripts  │                       │
+│   │ Interface │      │  (TUI)   │      │  (headless)│                      │
+│   └──────────┘      └──────────┘      └──────────┘                       │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-The model is replaceable. The environment, harness, tools, permissions, and developer experience are the product.
+</div>
 
 **NEXUS is not a chatbot. It is an AI development environment.**
+
+The model is replaceable. The environment, harness, tools, permissions, and developer experience are the product.
 
 | Without NEXUS | With NEXUS |
 |---|---|
@@ -59,33 +85,49 @@ The model is replaceable. The environment, harness, tools, permissions, and deve
 
 ---
 
-## Core Features
+## Core Architecture
 
 <div align="center">
 
 ```
-  ┌──────────────────────────────────────────────────────────────────┐
-  │                                                                  │
-  │      ┌─────────┐    ┌─────────┐    ┌─────────┐                  │
-  │      │  CLI    │───▶│ HARNESS │───▶│ PROVIDER│                  │
-  │      │  Layer  │    │  Engine │    │  Abstraction│               │
-  │      └─────────┘    └────┬────┘    └─────────┘                  │
-  │                          │                                      │
-  │           ┌──────────────┼──────────────┐                      │
-  │           ▼              ▼              ▼                        │
-  │     ┌───────────┐  ┌───────────┐  ┌───────────┐                │
-  │     │  TOOLS    │  │ PERMISSION│  │  SESSION  │                │
-  │     │  Engine   │  │  Engine   │  │   Store   │                │
-  │     └───────────┘  └───────────┘  └───────────┘                │
-  │           ▲              │              ▲                        │
-  │           └──────┬───────┘              │                       │
-  │                  ▼                       ▼                        │
-  │           ┌─────────────────────────────────────┐               │
-  │           │        CONTEXT BUILDER             │               │
-  │           │   (project · git · history · tools)│               │
-  │           └─────────────────────────────────────┘               │
-  │                                                                  │
-  └──────────────────────────────────────────────────────────────────┘
+      ┌─────────────────────────────────────────────────────────────────┐
+      │                          NEXUS CLI                               │
+      │                    (commander · TUI · streaming)                 │
+      └────────────────────────┬────────────────────────────────────────┘
+                               │
+      ┌────────────────────────┼────────────────────────────────────────┐
+      │                   ┌────┴────┐                                  │
+      │                   │ Play-   │                                 │
+      │                   │ ground  │                                 │
+      │                   └────┬────┘                                 │
+      │                        │                                      │
+      │    ┌───────────────────┼───────────────────┐                  │
+      │    │                   │                   │                  │
+      │    ▼                   ▼                   ▼                  │
+      │ ┌────────┐      ┌──────────┐      ┌──────────┐               │
+      │ │  TOOLS │◄─────┤  HARNESS │─────▶│ PROVIDER │               │
+      │ │ Engine │      │   Engine │      │  Abstr.  │               │
+      │ └───┬────┘      └────┬─────┘      └──────────┘               │
+      │     │               │                                       │
+      │     │    ┌──────────┴──────────┐                           │
+      │     │    │                     │                           │
+      │     ▼    ▼                     ▼                           │
+      │ ┌──────────┐      ┌──────────┐      ┌──────────┐           │
+      │ │ PERMISSION│      │  CONTEXT │      │  SESSION │           │
+      │ │  ENGINE  │      │  BUILDER │      │   STORE  │           │
+      │ └──────────┘      └──────────┘      └──────────┘           │
+      │    ▲                       │                       ▲       │
+      │    └───────────────────────┼───────────────────────┘       │
+      │                            │                               │
+      └────────────────────────────┼───────────────────────────────┘
+                                   │
+              ┌────────────────────┼────────────────────┐
+              │                    │                    │
+              ▼                    ▼                    ▼
+        ┌──────────┐        ┌──────────┐        ┌──────────┐
+        │  Config  │        │  Skills  │        │   Utils  │
+        │  Manager │        │  System  │        │   Layer  │
+        └──────────┘        └──────────┘        └──────────┘
 ```
 
 </div>
@@ -237,19 +279,21 @@ Type-safe config manager with deep-copy isolation (no shared-state mutations):
 <div align="center">
 
 ```
-  ╔══════════════════════════════════════════════════════════════════╗
-  ║  NEXUS CLI                commander · tui · streaming           ║
-  ╠══════════════════════════════════════════════════════════════════╣
-  ║  Config · Sessions · Paths · Utils            persistent state  ║
-  ╠══════════════════════════════════════════════════════════════════╣
-  ║  Agent Harness · Context Builder · Permission Engine  orchestrate ║
-  ╠══════════════════════════════════════════════════════════════════╣
-  ║  Providers  (OpenRouter · Anthropic · OpenAI · Ollama…) model    ║
-  ╠══════════════════════════════════════════════════════════════════╣
-  ║  Tools  (filesystem · terminal · git · 11 built-in) execution   ║
-  ╠══════════════════════════════════════════════════════════════════╣
-  ║  Skills · Playground · MCP · Plugins · Workflows · Agents       ║
-  ╚══════════════════════════════════════════════════════════════════╝
+  ┌────────────────────────────────────────────────────────────────────┐
+  │  ╔════════════════════════════════════════════════════════════╗   │
+  │  ║  NEXUS CLI                 commander · tui · streaming     ║   │
+  │  ╠════════════════════════════════════════════════════════════╣   │
+  │  ║  Config · Sessions · Paths · Utils          persistent state║   │
+  │  ╠════════════════════════════════════════════════════════════╣   │
+  │  ║  Agent Harness · Context Builder · Permission Engine  orches║   │
+  │  ╠════════════════════════════════════════════════════════════╣   │
+  │  ║  Providers  (OpenRouter · Anthropic · OpenAI · Ollama…) mod ║   │
+  │  ╠════════════════════════════════════════════════════════════╣   │
+  │  ║  Tools  (filesystem · terminal · git · 11 built-in) execu  ║   │
+  │  ╠════════════════════════════════════════════════════════════╣   │
+  │  ║  Skills · Playground · MCP · Plugins · Workflows · Agents  ║   │
+  │  ╚════════════════════════════════════════════════════════════╝   │
+  └────────────────────────────────────────────────────────────────────┘
 ```
 
 </div>
@@ -284,6 +328,8 @@ nexus
 
 ## First Run
 
+<div align="center">
+
 ```
   ╭────────────────────────────────────────────────────────────╮
   │                                                            │
@@ -301,6 +347,8 @@ nexus
   │                                                            │
   ╰────────────────────────────────────────────────────────────╯
 ```
+
+</div>
 
 > *Illustrative terminal output — actual TUI may vary.*
 
@@ -363,36 +411,42 @@ nexus --no-stream
 
 ### Slash Commands (inside session)
 
+<div align="center">
+
 ```
-  ╔══════════════════════════════════════════════════════════════╗
-  ║  Session Management                                          ║
-  ╠══════════════════════════════════════════════════════════════╣
-  ║  /new          Start a new session                           ║
-  ║  /sessions     List all sessions                             ║
-  ║  /switch       Switch to another session                     ║
-  ║  /save         Save current session                          ║
-  ║  /history      Show input history                             ║
-  ║  /clear        Clear conversation                             ║
-  ║  /title        Set session title                              ║
-  ║  /quit         Exit playground                                ║
-  ║                                                              ║
-  ║  Model & Provider                                            ║
-  ║  /model        Check or change model                          ║
-  ║  /models       List available models                          ║
-  ║  /provider     Check or change provider                        ║
-  ║  /providers    List configured providers                       ║
-  ║                                                              ║
-  ║  Info & Diagnostics                                          ║
-  ║  /help         Show available commands                        ║
-  ║  /tools        List available tools                           ║
-  ║  /permissions  Show permission policies                        ║
-  ║  /context      View assembled context                          ║
-  ║  /project      Show project info                              ║
-  ║  /doctor       Run diagnostics                                ║
-  ║  /skills       List installed skills                           ║
-  ║  /cost         Show token/cost info                            ║
-  ╚══════════════════════════════════════════════════════════════╝
+  ┌────────────────────────────────────────────────────────────────┐
+  │  ╔═══ SESSION MANAGEMENT ═══════════════════════════════════╗  │
+  │  ║  /new          Start a new session                      ║  │
+  │  ║  /sessions     List all sessions                        ║  │
+  │  ║  /switch       Switch to another session                 ║  │
+  │  ║  /save         Save current session                      ║  │
+  │  ║  /history      Show input history                        ║  │
+  │  ║  /clear        Clear conversation                        ║  │
+  │  ║  /title        Set session title                         ║  │
+  │  ║  /quit         Exit playground                            ║  │
+  │  ╚══════════════════════════════════════════════════════════╝  │
+  │                                                                │
+  │  ╔═══ MODEL & PROVIDER ══════════════════════════════════════╗  │
+  │  ║  /model        Check or change model                      ║  │
+  │  ║  /models       List available models                       ║  │
+  │  ║  /provider     Check or change provider                    ║  │
+  │  ║  /providers    List configured providers                    ║  │
+  │  ╚══════════════════════════════════════════════════════════╝  │
+  │                                                                │
+  │  ╔═══ INFO & DIAGNOSTICS ════════════════════════════════════╗  │
+  │  ║  /help         Show available commands                    ║  │
+  │  ║  /tools        List available tools                        ║  │
+  │  ║  /permissions  Show permission policies                    ║  │
+  │  ║  /context      View assembled context                      ║  │
+  │  ║  /project      Show project info                          ║  │
+  │  ║  /doctor       Run diagnostics                             ║  │
+  │  ║  /skills       List installed skills                       ║  │
+  │  ║  /cost         Show token/cost info                        ║  │
+  │  ╚══════════════════════════════════════════════════════════╝  │
+  └────────────────────────────────────────────────────────────────┘
 ```
+
+</div>
 
 Use `> ` prefix to enter multiline input mode — send a blank line to submit.
 
@@ -400,19 +454,19 @@ Use `> ` prefix to enter multiline input mode — send a blank line to submit.
 
 ## Use Cases
 
-### AI-Assisted Coding
+### 🧑‍💻 AI-Assisted Coding
 Run NEXUS in any project directory. It auto-detects the language (TypeScript, Python, Rust, Go, Ruby) and framework (Next.js, React, Vue, Express, Fastify), injects project context, and helps you write, edit, and debug code with full filesystem and terminal access.
 
-### Model Switching
+### 🔄 Model Switching
 Swap between Claude, GPT-4, Gemini, or local models without changing your workflow. Configure multiple providers and switch models on the fly with `nexus model use <id>`.
 
-### Local-First Workflows
+### 🔒 Local-First Workflows
 Run NEXUS with Ollama or LM Studio for fully local, offline AI. No API keys, no egress, no cost — just your model and your machine.
 
-### Secure Automation
+### 🛡️ Secure Automation
 The permission engine lets you run NEXUS in `sandbox` mode for untrusted tasks, or `relaxed` mode for trusted automation scripts. Every decision is auditable and persists across sessions.
 
-### Provider-Agnostic Scripts
+### 🔌 Provider-Agnostic Scripts
 Write tooling that works with any provider. The `Provider` interface is the contract — swap implementations without touching your harness or tools.
 
 ---
@@ -597,6 +651,8 @@ npm install -g nexus
 
 ### Project Structure
 
+<div align="center">
+
 ```
   nexus/
   ├── bin/nexus.js            # CLI entry point
@@ -633,33 +689,39 @@ npm install -g nexus
   └── tsconfig.json
 ```
 
+</div>
+
 ---
 
 ## Testing
 
+<div align="center">
+
 ```
-  ╔══════════════════════════════════════════════════════════════════╗
-  ║  npm test                                                        ║
-  ╠══════════════════════════════════════════════════════════════════╣
-  ║  ▶ CLI Dispatch (Regression)                                     ║
-  ║    ✔ should NOT silently exit when run with no args              ║
-  ║    ✔ should show provider error for nexus chat alias             ║
-  ║    ✔ should show provider error for nexus run alias              ║
-  ║    ✔ should show help for nexus --help                           ║
-  ║    ✔ should list providers command output                        ║
-  ║    ✔ should suggest how to add a provider                        ║
-  ╠══════════════════════════════════════════════════════════════════╣
-  ║  ▶ ConfigManager    ▶ ContextBuilder     ▶ AgentHarness          ║
-  ║  ▶ PermissionEngine ▶ SessionStore     ▶ Tool Executor           ║
-  ║  ▶ Provider Types  ▶ Tool Types                              ║
-  ║  ▶ SlashCommand Parser  ▶ SlashCommandRegistry  ▶ SkillManager    ║
-  ╚══════════════════════════════════════════════════════════════════╝
+  ┌──────────────────────────────────────────────────────────────────┐
+  │  npm test                                                          │
+  ├──────────────────────────────────────────────────────────────────┤
+  │  ▶ CLI Dispatch (Regression)                                      │
+  │    ✔ should NOT silently exit when run with no args               │
+  │    ✔ should show provider hint for nexus chat alias               │
+  │    ✔ should show provider hint for nexus run alias                │
+  │    ✔ should show help for nexus --help                            │
+  │    ✔ should list providers command output                         │
+  │    ✔ should suggest how to add a provider                         │
+  ├──────────────────────────────────────────────────────────────────┤
+  │  ▶ ConfigManager    ▶ ContextBuilder     ▶ AgentHarness           │
+  │  ▶ PermissionEngine ▶ SessionStore     ▶ Tool Executor            │
+  │  ▶ Provider Types  ▶ Tool Types                                 │
+  │  ▶ SlashCommand Parser  ▶ SlashCommandRegistry  ▶ SkillManager    │
+  └──────────────────────────────────────────────────────────────────┘
 
   ℹ tests 71
   ℹ suites 12
   ℹ pass 71
   ℹ fail 0
 ```
+
+</div>
 
 All 71 tests pass consistently. Run with `npm test` or `npm run test:watch`.
 
@@ -692,13 +754,15 @@ All 71 tests pass consistently. Run with `npm test` or `npm run test:watch`.
 
 ## Project Status
 
+<div align="center">
+
 ```
   ┌──────────────────────────────────────────────────────────────────┐
   │                                                                  │
   │   NEXUS v0.1.0 — Early development                               │
   │                                                                  │
-  │   A working, tested foundation for a universal AI development   │
-  │   platform. The core runtime — providers, harness, tools,        │
+  │   A working, tested foundation for a universal AI development    │
+  │   platform. The core runtime — providers, harness, tools,         │
   │   permissions, context, sessions, playground, and skills —        │
   │   is implemented and tested.                                     │
   │                                                                  │
@@ -708,6 +772,8 @@ All 71 tests pass consistently. Run with `npm test` or `npm run test:watch`.
   │                                                                  │
   └──────────────────────────────────────────────────────────────────┘
 ```
+
+</div>
 
 ---
 
@@ -740,15 +806,20 @@ Contributions are welcome. Here's how to get started:
 <div align="center">
 
 ```
-  ┌────────────────────────────────────────────────────────┐
-  │                                                        │
-  │    Build with every model.                             │
-  │    Route through every capability.                     │
-  │    Operate from one terminal.                          │
-  │                                                        │
-  └────────────────────────────────────────────────────────┘
+  ╔═══════════════════════════════════════════════════════════════╗
+  ║                                                               ║
+  ║    ╔═══════════════════════════════════════════════════╗      ║
+  ║    ║                                                  ║      ║
+  ║    ║      Build with every model.                     ║      ║
+  ║    ║      Route through every capability.             ║      ║
+  ║    ║      Operate from one terminal.                  ║      ║
+  ║    ║                                                  ║      ║
+  ║    ╚═══════════════════════════════════════════════════╝      ║
+  ║                                                               ║
+  ║                                                               ║
+  ║    github.com/qtjg/nexus  ·  npmjs.com/package/nexus  ·  v0.1.0║
+  ║                                                               ║
+  ╚═══════════════════════════════════════════════════════════════╝
 ```
-
-`github.com/qtjg/nexus` · `npmjs.com/package/nexus` · `v0.1.0`
 
 </div>
