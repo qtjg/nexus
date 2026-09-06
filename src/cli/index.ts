@@ -23,6 +23,9 @@ program
   .version('0.1.0');
 
 // ─── Main interactive command ────────────────────────────────
+// Commander v4 does not fire the program's default action when subcommands exist.
+// We define the options here so they appear in help, but the action is dispatched
+// manually after parse() when no subcommand matched.
 program
   .description('Start interactive NEXUS session')
   .option('-m, --model <model>', 'Model to use')
@@ -30,98 +33,7 @@ program
   .option('--safe', 'Safe permission mode (ask before everything)')
   .option('--normal', 'Normal permission mode')
   .option('--sandbox', 'Sandbox mode (deny dangerous operations)')
-  .option('--no-stream', 'Disable streaming')
-  .action(async (opts) => {
-    const projectPath = process.cwd();
-    const config = createConfig(projectPath);
-
-    // Detect project
-    const projectInfo = await detectProjectType(projectPath);
-    logger.info(`Project detected: ${projectPath}`);
-    if (projectInfo.language) logger.info(`Language: ${projectInfo.language}`);
-    if (projectInfo.framework) logger.info(`Framework: ${projectInfo.framework}`);
-
-    // Resolve model and provider
-    const model = resolveModel(config, opts.model);
-    const providerId = opts.provider || (config as any).config?.defaultProvider || 'openrouter';
-    const providerConfig = config.getProvider(providerId);
-
-    if (!providerConfig) {
-      console.error(chalk.red(`Provider not found: ${providerId}`));
-      console.error(chalk.yellow('Run: nexus provider add <provider> --api-key $API_KEY'));
-      process.exit(1);
-    }
-
-    // Create provider
-    const provider = createProvider(providerConfig);
-
-    // Verify connectivity
-    const healthy = await provider.healthCheck();
-    if (!healthy) {
-      console.error(chalk.red(`Provider "${providerId}" is not reachable`));
-      console.error(chalk.yellow('Check your API key and network connection.'));
-      process.exit(1);
-    }
-
-    // Setup permission engine
-    const permissionMode = opts.safe ? 'safe' : opts.sandbox ? 'sandbox' : 'normal';
-    const permEngine = new PermissionEngine(undefined, permissionMode as any);
-    config.setPermissionMode(permissionMode as any);
-
-    // Setup context builder
-    const contextBuilder = new ContextBuilder(config.get().context);
-    contextBuilder.setProjectInfo({
-      path: projectPath,
-      name: path.basename(projectPath),
-      ...projectInfo,
-      detectedAt: new Date().toISOString(),
-    });
-
-    // Setup session
-    const sessionStore = new SessionStore(projectPath);
-    const sessionId = `session_${Date.now()}`;
-    const session = {
-      id: sessionId,
-      projectId: projectPath,
-      name: `Session ${new Date().toLocaleString()}`,
-      status: 'active' as const,
-      model,
-      provider: providerId,
-      messages: [],
-      tools: BUILTIN_TOOLS.map((t) => t.name),
-      permissions: [],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      metadata: {},
-    };
-    await sessionStore.save(session);
-
-    // Create harness
-    const harnessOptions: HarnessOptions = {
-      provider,
-      model,
-      tools: BUILTIN_TOOLS,
-      permissionEngine: permEngine,
-      contextBuilder,
-      streaming: opts.stream ?? true,
-      systemPrompt: buildSystemPrompt(config, projectInfo, providerId, model),
-    };
-
-    const harness = new AgentHarness(harnessOptions);
-
-    // Print welcome
-    console.log(chalk.cyan('\n  ╔═══════════════════════════════════════════════════╗'));
-    console.log(chalk.cyan('  ║') + chalk.white('  NEXUS — Universal AI Developer Platform         ' + chalk.cyan('║')));
-    console.log(chalk.cyan('  ║') + chalk.dim('  Model: ') + chalk.yellow(model) + chalk.cyan('  ║'));
-    console.log(chalk.cyan('  ║') + chalk.dim('  Provider: ') + chalk.yellow(providerId) + chalk.cyan('  ║'));
-    console.log(chalk.cyan('  ║') + chalk.dim('  Project: ') + chalk.yellow(projectPath) + chalk.cyan('  ║'));
-    console.log(chalk.cyan('  ║') + chalk.dim('  Mode: ') + chalk.yellow(permissionMode) + chalk.cyan('  ║'));
-    console.log(chalk.cyan('  ╚═══════════════════════════════════════════════════╝\n'));
-    console.log(chalk.dim('  Type your request and press Enter. Type /help for commands.\n'));
-
-    // Read from stdin (pipe or interactive)
-    await runInteractive(harness, sessionStore, sessionId, projectPath);
-  });
+  .option('--no-stream', 'Disable streaming');
 
 // ─── Provider commands ───────────────────────────────────────
 program
@@ -343,6 +255,13 @@ program
 // ─── Parse and run ───────────────────────────────────────────
 program.parse(process.argv);
 
+// Commander v4 does not fire the program's default action when subcommands are defined.
+// If no subcommand matched (args is empty) and help was not requested, dispatch to
+// the interactive session with the program-level options.
+if (program.args.length === 0) {
+  await startInteractiveSession(program.opts());
+}
+
 // ─── Helper Functions ────────────────────────────────────────
 
 function resolveModel(config: ReturnType<typeof createConfig>, requested?: string): string {
@@ -465,6 +384,105 @@ function getDefaultModel(id: string, override?: string): { id: string; contextWi
     lmstudio: { id: 'local-model', contextWindow: 128000 },
   };
   return models[id] ?? null;
+}
+
+async function startInteractiveSession(opts: {
+  model?: string;
+  provider?: string;
+  safe?: boolean;
+  normal?: boolean;
+  sandbox?: boolean;
+  stream?: boolean;
+}): Promise<void> {
+  const projectPath = process.cwd();
+  const config = createConfig(projectPath);
+
+  // Detect project
+  const projectInfo = await detectProjectType(projectPath);
+  logger.info(`Project detected: ${projectPath}`);
+  if (projectInfo.language) logger.info(`Language: ${projectInfo.language}`);
+  if (projectInfo.framework) logger.info(`Framework: ${projectInfo.framework}`);
+
+  // Resolve model and provider
+  const model = resolveModel(config, opts.model);
+  const providerId = opts.provider || (config as any).config?.defaultProvider || 'openrouter';
+  const providerConfig = config.getProvider(providerId);
+
+  if (!providerConfig) {
+    console.error(chalk.red(`Provider not found: ${providerId}`));
+    console.error(chalk.yellow('Run: nexus provider add <provider> --api-key $API_KEY'));
+    process.exit(1);
+  }
+
+  // Create provider
+  const provider = createProvider(providerConfig);
+
+  // Verify connectivity
+  const healthy = await provider.healthCheck();
+  if (!healthy) {
+    console.error(chalk.red(`Provider "${providerId}" is not reachable`));
+    console.error(chalk.yellow('Check your API key and network connection.'));
+    process.exit(1);
+  }
+
+  // Setup permission engine
+  const permissionMode = opts.safe ? 'safe' : opts.sandbox ? 'sandbox' : 'normal';
+  const permEngine = new PermissionEngine(undefined, permissionMode as any);
+  config.setPermissionMode(permissionMode as any);
+
+  // Setup context builder
+  const contextBuilder = new ContextBuilder(config.get().context);
+  contextBuilder.setProjectInfo({
+    path: projectPath,
+    name: path.basename(projectPath),
+    ...projectInfo,
+    detectedAt: new Date().toISOString(),
+  });
+
+  // Setup session
+  const sessionStore = new SessionStore(projectPath);
+  const sessionId = `session_${Date.now()}`;
+  const session = {
+    id: sessionId,
+    projectId: projectPath,
+    name: `Session ${new Date().toLocaleString()}`,
+    status: 'active' as const,
+    model,
+    provider: providerId,
+    messages: [],
+    tools: BUILTIN_TOOLS.map((t) => t.name),
+    permissions: [],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    metadata: {},
+  };
+  await sessionStore.save(session);
+
+  // Create harness
+  const harnessOptions: HarnessOptions = {
+    provider,
+    model,
+    tools: BUILTIN_TOOLS,
+    permissionEngine: permEngine,
+    contextBuilder,
+    streaming: opts.stream ?? true,
+    systemPrompt: buildSystemPrompt(config, projectInfo, providerId, model),
+  };
+
+  const harness = new AgentHarness(harnessOptions);
+
+  // Print welcome
+  console.log(chalk.cyan('\n  ╔═══════════════════════════════════════════════════╗'));
+  console.log(chalk.cyan('  ║') + chalk.white('  NEXUS — Universal AI Developer Platform         ' + chalk.cyan('║')));
+  console.log(chalk.cyan('  ║') + chalk.dim('  Model: ') + chalk.yellow(model) + chalk.cyan('  ║'));
+  console.log(chalk.cyan('  ║') + chalk.dim('  Provider: ') + chalk.yellow(providerId) + chalk.cyan('  ║'));
+  console.log(chalk.cyan('  ║') + chalk.dim('  Project: ') + chalk.yellow(projectPath) + chalk.cyan('  ║'));
+  console.log(chalk.cyan('  ║') + chalk.dim('  Mode: ') + chalk.yellow(permissionMode) + chalk.cyan('  ║'));
+  console.log(chalk.cyan('  ╚═══════════════════════════════════════════════════╝\n'));
+  console.log(chalk.dim('  Type your request and press Enter. Type /help for commands.\n'));
+
+  // Read from stdin (pipe or interactive)
+  await runInteractive(harness, sessionStore, sessionId, projectPath);
 }
 
 async function runInteractive(harness: AgentHarness, sessionStore: SessionStore, sessionId: string, projectPath: string): Promise<void> {
