@@ -1,0 +1,36 @@
+{
+  "name": "nexus",
+  "version": "0.1.0",
+  "description": "NEXUS — Universal AI Developer Platform",
+  "type": "module",
+  "bin": {
+    "nexus": "./bin/nexus.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "node bin/nexus.js",
+    "test": "node --test tests/**/*.test.ts",
+    "test:watch": "node --test --watch tests/**/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": ["ai", "agent", "cli", "developer-tools"],
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^4.1.1",
+    "openai": "^4.28.0",
+    "@anthropic-ai/sdk": "^0.27.0"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3",
+    "@types/node": "^22.20.0"
+  }
+}
