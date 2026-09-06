@@ -7,7 +7,7 @@
 A model-independent, provider-agnostic AI runtime — unified agent harness, tool system, permissions, and context management in one CLI.
 
 ```
-npm install -g nexus
+git clone https://github.com/qtjg/nexus.git && cd nexus && npm install && npm run build && npm link
 ```
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
@@ -187,14 +187,12 @@ Type-safe config manager with deep-copy isolation (no shared-state mutations):
 ## Quick Start
 
 ```bash
-# Install from source
+# Clone, install, build, and link
 git clone https://github.com/qtjg/nexus.git
 cd nexus
 npm install
 npm run build
-
-# Or install globally
-npm install -g nexus
+npm link
 
 # Initialize in your project
 nexus init
@@ -446,6 +444,9 @@ npm install
 # Build TypeScript
 npm run build
 
+# Link globally for local testing
+npm link
+
 # Run tests
 npm test
 
@@ -458,6 +459,22 @@ npm run typecheck
 # Run in development mode
 npm run dev
 ```
+
+## Installing from Published Package
+
+Once published to npm:
+
+```bash
+npm install -g nexus
+```
+
+> **Note:** If your system has a root-owned global npm prefix (e.g. `/usr/lib/node_modules` on Arch Linux), configure a user-local prefix instead:
+>
+> ```bash
+> npm config set prefix '~/.local/npm'
+> export PATH="$HOME/.local/npm/bin:$PATH"
+> npm install -g nexus
+> ```
 
 ### Project Structure
 

@@ -1,7 +1,7 @@
 {
   "name": "nexus",
   "version": "0.1.0",
-  "description": "NEXUS — Universal AI Developer Platform",
+  "description": "NEXUS — Universal AI Developer Platform. A model-independent, provider-agnostic AI runtime with unified agent harness, tool system, permissions, and context management.",
   "type": "module",
   "bin": {
     "nexus": "./bin/nexus.js"
@@ -14,20 +14,50 @@
       "import": "./dist/index.js"
     }
   },
+  "files": [
+    "bin/",
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc",
     "dev": "node bin/nexus.js",
     "test": "node --test tests/**/*.test.ts",
     "test:watch": "node --test --watch tests/**/*.test.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepack": "npm run build",
+    "prepublishOnly": "npm run build && npm test"
   },
-  "keywords": ["ai", "agent", "cli", "developer-tools"],
+  "keywords": [
+    "ai",
+    "agent",
+    "cli",
+    "llm",
+    "developer-tools",
+    "anthropic",
+    "openai",
+    "openrouter",
+    "ollama",
+    "tool-use"
+  ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qtjg/nexus.git"
+  },
+  "homepage": "https://github.com/qtjg/nexus#readme",
+  "bugs": {
+    "url": "https://github.com/qtjg/nexus/issues"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "dependencies": {
-    "chalk": "^4.1.2",
+    "chalk": "^5.3.0",
     "commander": "^4.1.1",
     "openai": "^4.28.0",
-    "@anthropic-ai/sdk": "^0.27.0"
+    "@anthropic-ai/sdk": "^0.32.0"
   },
   "devDependencies": {
     "typescript": "^6.0.3",
