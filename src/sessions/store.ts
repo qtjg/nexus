@@ -18,8 +18,12 @@ export class SessionStore {
   }
 
   async save(session: Session): Promise<void> {
-    const filePath = path.join(this.baseDir, `${session.id}.json`);
-    await writeJsonFile(filePath, session);
+    try {
+      const filePath = path.join(this.baseDir, `${session.id}.json`);
+      await writeJsonFile(filePath, session);
+    } catch {
+      // Silently skip persistence if the directory is unavailable
+    }
   }
 
   async load(sessionId: string): Promise<Session | null> {

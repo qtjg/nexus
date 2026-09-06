@@ -273,35 +273,25 @@ async function startInteractiveSession(opts: {
 
   // Resolve model and provider
   const model = resolveModel(config, opts.model);
-  const providerId = opts.provider || config.get().defaultProvider || 'openrouter';
+  const providerId = opts.provider || config.get().defaultProvider || 'none';
 
   // Determine permission mode
   const permissionMode = opts.safe ? 'safe' : opts.sandbox ? 'sandbox' : 'normal';
 
-  // Create provider
+  // Create provider (graceful fallback to no-provider mode)
   let provider: Provider;
   let providerConfig = config.getProvider(providerId);
 
-  if (!providerConfig) {
-    if (providerId === 'none') {
-      provider = createNoProvider();
-    } else {
-      console.error(chalk.red(`Provider not found: ${providerId}`));
-      console.error(chalk.yellow('Run: nexus provider add <provider> --api-key $API_KEY'));
-      console.error(chalk.yellow('\n  Or start with no provider: nexus --provider none'));
-      process.exit(1);
-    }
+  if (providerId === 'none' || !providerConfig) {
+    provider = createNoProvider();
   } else {
     provider = createProvider(providerConfig);
 
-    if (providerId !== 'none') {
-      const healthy = await provider.healthCheck();
-      if (!healthy) {
-        console.error(chalk.red(`Provider "${providerId}" is not reachable`));
-        console.error(chalk.yellow('Check your API key and network connection.'));
-        console.error(chalk.yellow('\n  Or start with no provider: nexus --provider none'));
-        process.exit(1);
-      }
+    const healthy = await provider.healthCheck();
+    if (!healthy) {
+      console.error(chalk.yellow(`⚠ Provider "${providerId}" is not reachable — starting in offline mode.`));
+      console.error(chalk.yellow(`  Add a key with: nexus provider add ${providerId} --api-key $API_KEY\n`));
+      provider = createNoProvider();
     }
   }
 

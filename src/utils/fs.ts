@@ -13,7 +13,15 @@ export function readJsonFile<T>(filePath: string): T {
 
 export function writeJsonFile<T>(filePath: string, data: T): void {
   const dir = path.dirname(filePath);
-  fsSync.mkdirSync(dir, { recursive: true });
+  try {
+    fsSync.mkdirSync(dir, { recursive: true });
+  } catch (err: any) {
+    if (err.code === 'ENOENT' || err.code === 'EROFS') {
+      // Directory cannot be created (e.g. read-only filesystem). Skip writing.
+      return;
+    }
+    throw err;
+  }
   fsSync.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
 }
 

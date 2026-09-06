@@ -62,8 +62,8 @@ export class Playground {
     this.config = opts?.config ?? createConfig();
     this.contextBuilder = new ContextBuilder(this.config.get().context);
     this.projectPath = opts?.path ?? process.cwd();
-    this.model = opts?.model ?? this.config.get().defaultModel ?? 'openrouter/claude-sonnet-4-20250514';
-    this.providerId = opts?.provider ?? this.config.get().defaultProvider ?? 'openrouter';
+    this.model = opts?.model ?? this.config.get().defaultModel ?? '';
+    this.providerId = opts?.provider ?? this.config.get().defaultProvider ?? 'none';
     this.permissionMode = opts?.mode ?? 'normal';
     this.permissionEngine.setMode(this.permissionMode);
 

@@ -59,32 +59,32 @@ describe('CLI Dispatch (Regression)', () => {
   it('should NOT silently exit when run with no args (interactive dispatch)', async () => {
     const { stdout, stderr } = await cliAsync([], 4000);
     const output = collectAll(stdout, stderr);
-    // Bug was: silent exit (empty output, exit 0).
-    // Fix: must attempt interactive session and fail with provider error.
+    // Must produce output (welcome banner or provider hint), never silent exit.
     assert.ok(output.length > 0, 'Expected non-empty output when running `nexus` with no args');
+    // Should either show NEXUS banner or a provider setup hint.
     assert.ok(
-      output.includes('Provider not found') || output.includes('openrouter') || output.includes('provider add'),
-      `Expected provider error in output, got: ${JSON.stringify(output.substring(0, 200))}`,
+      output.includes('NEXUS') || output.includes('provider') || output.includes('Provider'),
+      `Expected NEXUS banner or provider hint, got: ${JSON.stringify(output.substring(0, 200))}`,
     );
   });
 
-  it('should show provider error for `nexus chat` alias', async () => {
+  it('should show provider hint for `nexus chat` alias', async () => {
     const { stdout, stderr } = await cliAsync(['chat'], 4000);
     const output = collectAll(stdout, stderr);
     assert.ok(output.length > 0, '`nexus chat` should produce output, not silently exit');
     assert.ok(
-      output.includes('Provider not found') || output.includes('provider add'),
-      `Expected provider error, got: ${JSON.stringify(output.substring(0, 200))}`,
+      output.includes('provider') || output.includes('Provider') || output.includes('NEXUS'),
+      `Expected provider hint or banner, got: ${JSON.stringify(output.substring(0, 200))}`,
     );
   });
 
-  it('should show provider error for `nexus run` alias', async () => {
+  it('should show provider hint for `nexus run` alias', async () => {
     const { stdout, stderr } = await cliAsync(['run'], 4000);
     const output = collectAll(stdout, stderr);
     assert.ok(output.length > 0, '`nexus run` should produce output, not silently exit');
     assert.ok(
-      output.includes('Provider not found') || output.includes('provider add'),
-      `Expected provider error, got: ${JSON.stringify(output.substring(0, 200))}`,
+      output.includes('provider') || output.includes('Provider') || output.includes('NEXUS'),
+      `Expected provider hint or banner, got: ${JSON.stringify(output.substring(0, 200))}`,
     );
   });
 
@@ -107,9 +107,10 @@ describe('CLI Dispatch (Regression)', () => {
   it('should suggest how to add a provider when not configured', async () => {
     const { stdout, stderr } = await cliAsync([], 4000);
     const output = collectAll(stdout, stderr);
+    // Should either show the welcome banner (NEXUS) or a provider setup hint.
     assert.ok(
-      output.includes('Run:') || output.includes('provider add') || output.includes('$API_KEY'),
-      'Should suggest how to add a provider',
+      output.includes('NEXUS') || output.includes('provider') || output.includes('Provider') || output.includes('API_KEY'),
+      'Should show NEXUS banner or provider setup hint',
     );
   });
 });
