@@ -1,5 +1,23 @@
 # NEXUS
 
+<!-- ⬡ 3D-UPGRADE v1 by Mayank Bhaskar -->
+<div align="center">
+
+![nexus — 3D](assets/3d-hero.svg)
+
+**made by [Mayank Bhaskar](https://github.com/qtjg)** · ![lang](https://img.shields.io/badge/lang-TypeScript-22d3ee?style=flat&labelColor=0d1117) ![stars](https://img.shields.io/github/stars/qtjg/nexus?style=flat&labelColor=0d1117&color=22d3ee)
+
+### 🧊 3D View
+
+![nexus — isometric stack](assets/3d-stack.svg)
+
+*Floating isometric render — layers hover, data particles stream, shine sweeps.*
+
+</div>
+
+---
+🩺 **New tool — `repo-pulse`**: instant git pulse (28-day heat bars, hot files, contributors). Run: `node tools/repo-pulse.mjs`
+
 <div align="center">
 
 ```
