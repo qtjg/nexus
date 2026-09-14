@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="360" viewBox="0 0 880 360" role="img" aria-label="qtjg/nexus 3D language stack">
+<defs>
+<linearGradient id="bg2056f911" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#180c13"/>
+<stop offset="1" stop-color="#2d1524"/>
+</linearGradient>
+<clipPath id="clip"><rect width="880" height="360"/></clipPath>
+</defs>
+<rect width="880" height="360" fill="url(#bg2056f911)"/>
+<text x="44" y="48" font-family="'Segoe UI',-apple-system,'Helvetica Neue',Arial,sans-serif" font-size="15" font-weight="800" letter-spacing="5" fill="#dfc3d5">LANGUAGE STACK</text>
+<text x="44" y="70" font-family="'Segoe UI',-apple-system,'Helvetica Neue',Arial,sans-serif" font-size="12" letter-spacing="2" fill="#a88a9d">qtjg/nexus</text>
+<ellipse cx="190" cy="257" rx="64" ry="11" fill="#dd3ca2" opacity="0.20">
+<animate attributeName="opacity" values="0.12;0.30;0.12" dur="4s" repeatCount="indefinite"/>
+</ellipse>
+<polygon points="60,270 440,202 820,270 440,338" fill="#271721" stroke="#c270a4" stroke-opacity="0.35" stroke-width="1.2"/><polygon points="60,270 440,202 820,270 440,338" fill="none" stroke="#e085bf" stroke-opacity="0.10" stroke-width="6"/>
+<polygon points="190.0,146.7 238.0,122.7 190.0,98.7 142.0,122.7" fill="#498cd4" stroke="#abd0f8" stroke-width="0.8"/><polygon points="142.0,224.7 190.0,248.7 190.0,146.7 142.0,122.7" fill="#2662a2"/><polygon points="190.0,248.7 238.0,224.7 238.0,122.7 190.0,146.7" fill="#1b4674"/><polygon points="750.0,230.8 798.0,206.8 750.0,182.8 702.0,206.8" fill="#d4c449" stroke="#f8efab" stroke-width="0.8"/><polygon points="702.0,235.5 750.0,259.5 750.0,230.8 702.0,206.8" fill="#a29326"/><polygon points="750.0,259.5 798.0,235.5 798.0,206.8 750.0,230.8" fill="#74691b"/>
+<text x="190" y="279" font-family="'Segoe UI',-apple-system,'Helvetica Neue',Arial,sans-serif" font-size="13" font-weight="600" text-anchor="middle" fill="#c9d6e8">TypeScript</text><text x="190" y="299" font-family="'Segoe UI',-apple-system,'Helvetica Neue',Arial,sans-serif" font-size="14" font-weight="800" text-anchor="middle" fill="#7eb6f1">98.9%</text><text x="750" y="289" font-family="'Segoe UI',-apple-system,'Helvetica Neue',Arial,sans-serif" font-size="13" font-weight="600" text-anchor="middle" fill="#c9d6e8">JavaScript</text><text x="750" y="309" font-family="'Segoe UI',-apple-system,'Helvetica Neue',Arial,sans-serif" font-size="14" font-weight="800" text-anchor="middle" fill="#f1e37e">1.1%</text>
+<g clip-path="url(#clip)"><polygon points="0,0 150,0 60,360 -90,360" fill="#ffffff" opacity="0.045"><animateTransform attributeName="transform" type="translate" from="-260 0" to="1140 0" dur="8.0s" repeatCount="indefinite"/></polygon></g>
+<rect x="0" y="0" width="880" height="3" fill="#e052ac" opacity="0.85"/>
+<rect x="0" y="356" width="880" height="4" fill="#a13679" opacity="0.5"/>
+</svg>
