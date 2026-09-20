@@ -15,3 +15,15 @@ dist/
 coverage/
 *.tgz
 *.tar.gz
+.eslintcache
+
+
+# Node version managers
+.node-version
+
+.python-version
+
+
+# Python
+__pycache__/
+*.py[cod]
