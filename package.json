@@ -57,7 +57,7 @@
     "chalk": "^6.0.0",
     "commander": "^4.1.1",
     "openai": "4.68.0",
-    "@anthropic-ai/sdk": "0.32.0",
+    "@anthropic-ai/sdk": "0.126.0",
     "node-fetch": "^3.3.2",
     "formdata-node": "^6.0.3",
     "agentkeepalive": "^4.5.0"
